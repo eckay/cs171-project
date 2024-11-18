@@ -1,0 +1,19 @@
+#connections-area {
+    height: 97vh;
+    padding-bottom: 1vh;
+    padding-top: 3vh;
+}
+
+#page1 {
+    background-color: antiquewhite;
+}
+
+.content-box {
+    height: 97vh;
+}
+
+.content-box1 {
+    background-color: azure;
+    border-radius: 5px;
+    height: 90vh;
+}
