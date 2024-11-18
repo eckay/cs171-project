@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge CSV Files</title>
+</head>
+<body>
+<h1>Merge Banned Books Data</h1>
+<input type="file" id="books2File" accept=".csv">
+<input type="file" id="penDataFile" accept=".csv">
+<button id="mergeButton">Merge Files</button>
+<a id="downloadLink" style="display:none;">Download Merged File</a>
+
+<script>
+    // Assuming you're using D3.js to load the CSV files
+    d3.csv("updatedPENdata.csv").then(function(updatedPENdata) {
+        d3.csv("books2.csv").then(function(books2) {
+
+            // Create a map of books in books2 with title as the key
+            let books2Map = new Map();
+            books2.forEach(book => {
+                books2Map.set(book.title, book);
+            });
+
+            // Now, merge the two datasets based on titles
+            let mergedData = [];
+            updatedPENdata.forEach(penBook => {
+                let matchingBook = books2Map.get(penBook.title);
+                if (matchingBook) {
+                    // Merge the books by combining their fields
+                    let mergedBook = { ...penBook, ...matchingBook };
+                    mergedData.push(mergedBook);
+                }
+            });
+
+            // mergedData now contains the merged dataset
+            console.log(mergedData);
+
+            // Optionally, you can write the merged data to a new CSV
+            // You can use d3.csvFormat to convert the data back to CSV format:
+            let csvOutput = d3.csvFormat(mergedData);
+            console.log(csvOutput);
+            // Write the output to a file if needed
+        });
+    });
+
+    /* document.getElementById('mergeButton').addEventListener('click', async () => {
+         const books2File = document.getElementById('books2File').files[0];
+         const penDataFile = document.getElementById('penDataFile').files[0];
+
+         if (!books2File || !penDataFile) {
+             alert("Please select both CSV files.");
+             return;
+         }
+
+         // Read and parse the CSV files
+         const books2Data = await readCSV(books2File);
+         const penData = await readCSV(penDataFile);
+
+         // Merge data
+         const mergedData = mergeDatasets(books2Data, penData);
+
+         // Convert merged data to CSV and create a download link
+         const csvContent = createCSV(mergedData);
+         const blob = new Blob([csvContent], { type: "text/csv" });
+         const url = URL.createObjectURL(blob);
+
+         const downloadLink = document.getElementById('downloadLink');
+         downloadLink.href = url;
+         downloadLink.download = "full.csv";
+         downloadLink.style.display = "block";
+         downloadLink.textContent = "Download Merged File";
+     });
+
+     // Function to read and parse a CSV file
+     async function readCSV(file) {
+         const text = await file.text();
+         const rows = text.split("\n").map(row => row.split(","));
+         const headers = rows[0];
+         const data = rows.slice(1).map(row => {
+             const obj = {};
+             row.forEach((cell, i) => obj[headers[i]] = cell);
+             return obj;
+         });
+         return data;
+     }
+
+     function mergeDatasets(books2Data, penData) {
+         // Create a Map to match penData rows by title
+         const penDataMap = new Map(penData.map(item => [item.title, item]));
+
+         // Initialize the merged dataset
+         const mergedData = [];
+
+         // Loop through each book in books2Data
+         books2Data.forEach(book => {
+             const penEntry = penDataMap.get(book.title); // Find the matching penData entry
+
+             const mergedEntry = {
+                 ...book, // Include all fields from books2Data
+                 ...(penEntry || { // Add fields from penData if a match exists
+                     state: null,
+                     district: null,
+                     ban_status: null,
+                     initiating_action: null,
+                     // Add any other penData fields you want to default when no match exists
+                 })
+             };
+
+             mergedData.push(mergedEntry); // Add the combined entry to the result
+         });
+
+         return mergedData;
+     }
+
+
+
+     // Function to convert data to CSV format
+     function createCSV(data) {
+         const headers = Object.keys(data[0]);
+         const rows = data.map(row => headers.map(header => row[header]));
+         return [headers.join(","), ...rows.map(row => row.join(","))].join("\n");
+     }*/
+</script>
+</body>
+</html>
