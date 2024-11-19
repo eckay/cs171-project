@@ -13,7 +13,7 @@ class scatterChart {
 		
         vis.margin = {top: 40, right: 60, bottom: 40, left: 40};
 
-		vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
+		vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width * 0.8 - vis.margin.left - vis.margin.right;
 		vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
 		// SVG drawing area
@@ -212,6 +212,7 @@ class scatterChart {
 				// Take away his clicking power
 				d3.select(this).on('click',null);
 				d3.select(this).on('mouseover',null);
+				d3.select(this).on('mouseout',null);
 				vis.timelineTrigger.on('click',null);
 
 				d3.selectAll("circle.banned")
@@ -263,7 +264,7 @@ class scatterChart {
 			.attr("id", "infoRect")
 			.attr("x", 0)
 			.attr("y", 0)
-			.attr("width", vis.width)
+			.attr("width", vis.width - vis.margin.right)
 			.attr("height", vis.height * 0.7)
 			.attr("stroke", "black")
 			.attr("fill", "rgba(0, 0, 0, 0)")
@@ -281,7 +282,7 @@ class scatterChart {
 		// Title
 		vis.infoBox
 			.append("text")
-			.attr("x", vis.width - vis.circleRadius * 3)
+			.attr("x", vis.width - vis.margin.right - vis.circleRadius * 3)
 			.attr("y", vis.circleRadius * 5)
 			.attr("text-anchor", "end")
 			.text(`${book.title}`)
