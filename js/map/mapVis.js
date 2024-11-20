@@ -9,13 +9,14 @@ class MapVis {
         // this.covidData = covidData;
         // this.usaData = usaData;
 
-        console.log(bookData);
+        //console.log(bookData);
         this.displayData = [];
-        this.colors = d3.scaleQuantize()
+        this.colors = d3.scaleSequential()
+            .interpolator(t => d3.interpolateBlues(0.15 + t * 0.8)); // referenced gpt: skips the lightest 20% of the range
         // .range(["#6f9c3d", "#a5c90f",
         //     "#ffb366", "#ff8829", "#fe6b40", "#a22626"]);
-            .range(["#6f9c3d", "#a5c90f",
-                "#ff8829", "#A2264B", "#A2264B", "#A2264B"]);
+        //     .range(["#6f9c3d", "#a5c90f",
+        //         "#ff8829", "#A2264B", "#A2264B", "#A2264B"]);
 
         // parse date method
         this.parseDate = d3.timeParse("%m/%d/%Y");
@@ -84,29 +85,62 @@ class MapVis {
             .attr('class', 'state map')
             .attr("d", vis.path)
 
-        vis.legendScale = d3.scaleLinear()
-            .domain(vis.colors.domain())
-            .range([0, 200]); // determines width of the overall legend, and position of each
+        // vis.legendScale = d3.scaleLinear()
+        //     .domain(vis.colors.domain())
+        //     .range([0, 200]); // determines width of the overall legend, and position of each
+        //
+        // vis.legendColors = vis.colors.range().map( // referenced gpt on how to create object from list. covered in class previously
+        //     color => {
+        //     const d = vis.colors.invertExtent(color); // used previously in class, modified  to output a range of px values for each color, later used to define width
+        //     return {
+        //         color: color,
+        //         min: d[0],
+        //         max: d[1]
+        //     };
+        // })
+        // let legendRects = vis.svg.selectAll(".legend-rect.map")
+        //     .data(vis.legendColors)
+        // legendRects.enter().append("rect")
+        //     .attr("class", "legend-rect map")
+        //     .merge(legendRects)
+        //     .attr("x", d => vis.legendScale(d.min)) // starting position for the rectangle. referenced gpt
+        //     .attr("width", d => vis.legendScale(d.max) - vis.legendScale(d.min)) // determine width based off of inversion. referenced gpt
+        //     .attr("height", 20)
+        //     .attr("transform", `translate(${vis.width - 225 - 20}, ${vis.height - 30 - 20})`)
+        //     .style("fill", d => d.color);
+        let legendWidth = 300;
+        let legendHeight = 20;
 
-        vis.legendColors = vis.colors.range().map( // referenced gpt on how to create object from list. covered in class previously
-            color => {
-            const d = vis.colors.invertExtent(color); // used previously in class, modified  to output a range of px values for each color, later used to define width
-            return {
-                color: color,
-                min: d[0],
-                max: d[1]
-            };
-        })
-        let legendRects = vis.svg.selectAll(".legend-rect.map")
-            .data(vis.legendColors)
-        legendRects.enter().append("rect")
-            .attr("class", "legend-rect map")
-            .merge(legendRects)
-            .attr("x", d => vis.legendScale(d.min)) // starting position for the rectangle. referenced gpt
-            .attr("width", d => vis.legendScale(d.max) - vis.legendScale(d.min)) // determine width based off of inversion. referenced gpt
-            .attr("height", 20)
-            .attr("transform", `translate(${vis.width - 225 - 20}, ${vis.height - 30 - 20})`)
-            .style("fill", d => d.color);
+        let svgLegend = vis.svg // Replace with the specific container for the legend
+            .append("svg")
+            .attr("class","svg-legend")
+            .attr("width", legendWidth + 50)
+            .attr("height", legendHeight);
+
+        const gradient = svgLegend.append("defs")
+            .append("linearGradient")
+            .attr("id", "legend-gradient")
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "100%")
+            .attr("y2", "0%");
+
+    // Add color stops to the gradient
+            gradient.append("stop")
+                .attr("offset", "0%")
+                .attr("stop-color", vis.colors(vis.colors.domain[0]));
+
+            gradient.append("stop")
+                .attr("offset", "100%")
+                .attr("stop-color", vis.colors(vis.colors.domain[1]));
+
+    // Add a rectangle with the gradient
+            svgLegend.append("rect")
+                .attr("x", 20)
+                .attr("y", 20)
+                .attr("width", legendWidth)
+                .attr("height", legendHeight)
+                .style("fill", "url(#legend-gradient)");
 
 
 
@@ -135,7 +169,7 @@ class MapVis {
         //         .merge(allCategories)
         //         .attr("value", d => d.toLowerCase())
 
-        console.log("uniqueStatuses", uniqueStatuses);
+        //console.log("uniqueStatuses", uniqueStatuses);
 
         return(uniqueStatuses);
     }
@@ -152,8 +186,11 @@ class MapVis {
              let author = row['Author'];
              let reason = row['Initiating Action']
 
-             if(banStatus != null && banStatus.toLowerCase() === vis.selectedCategory) // property exists and the type of ban we want
+
+
+             if(banStatus != null && banStatus.toLowerCase() === vis.selectedCategory || vis.selectedCategory === "all ban types") // property exists and the type of ban we want
              {
+
                  // if no data for state, add. else add if greatest rating so far
                  if(!topBooksByState[state] || topBooksByState[state].totalRatings < totalRatings)
                  {
@@ -166,7 +203,7 @@ class MapVis {
                  }
              }
          })
-
+         console.log("total restricted books: ", vis.bookData)
          console.log("top books by state", topBooksByState)
          return topBooksByState
      }
@@ -211,7 +248,7 @@ class MapVis {
         vis.allBanStatusTypes()
 
         vis.colors.domain([
-            0,
+            d3.min(Object.values(vis.tallyStatusByState), function(d) { return d; }),
             d3.max(Object.values(vis.tallyStatusByState), function(d) { return d; })
         ]);
 
@@ -224,7 +261,7 @@ class MapVis {
     updateVis() {
         let vis = this;
 
-        console.log("updating vis")
+        //console.log("updating vis")
         d3.selectAll(".state").each(function(d)
         { // d represents vis.world data bound to each element
            try
@@ -236,11 +273,11 @@ class MapVis {
 
                d3.select(this)
                    .style("fill", color)
-                   .style("opacity", .8)
+                   //.style("opacity", .8)
                    .text(tally === 0 ? "" : tally)
 
 
-               console.log(d3.geoCentroid(d)[1])
+               //console.log(d3.geoCentroid(d)[1])
                let stateLabel = vis.svg.selectAll(`#${name}-label`).data(d)
                stateLabel.enter().append("text")
                    .class(`#${name}-label map`)
@@ -258,9 +295,9 @@ class MapVis {
               //console.log("region/state not in data: ", d.properties.name)
            }
         });
-        // let allselectedCategory =  Object.values(vis.stateInfo).map((state) => state[vis.selectedCategory])
-        // let maxProp = d3.max(allselectedCategory)
-        // let minProp = d3.min(allselectedCategory)
+
+        // let maxProp = d3.max(vis.topBooksByState)
+        // let minProp = d3.min(vis.topBooksByState)
         //
         // vis.svg.selectAll(".tick").remove()
         // let legendScale = d3.scaleLinear()
@@ -277,10 +314,10 @@ class MapVis {
         //     .attr("transform", `translate(${vis.width - 200 - 45}, ${vis.height - 30})`)
         //     .call(legendAxis)
         //     .select(".domain").remove();
-        //
+
         //console.log(d3.selectAll(".state").nodes());
         d3.selectAll(".state").on('mouseover', function(event, d) {
-            console.log("mouseover")
+            //console.log("mouseover")
 
             // topBooksByState[state] = {
             //     title: title,
@@ -296,7 +333,7 @@ class MapVis {
                     totalRatings: "NA"
             }
             vis.tooltip.html(`
-                            <h3>${state}'s Top Book</h3>
+                            <h3>${state}'s Top Banned Book</h3>
                             Title: ${stateData.title} <br><br>
                             Authors: ${stateData.authors} <br><br>
                             Reason Banned: ${stateData.reason_banned} <br><br>

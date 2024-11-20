@@ -75,8 +75,8 @@ function initPage(data) {
 }
 
 // map category changes
-function categoryChange() {
-    myMapVis.selectedCategory =  document.getElementById('categorySelector').value;
+function mapCategoryChange() {
+    //myMapVis.selectedCategory =  document.getElementById('mapCategorySelector').value;
     myMapVis.wrangleData(); // maybe you need to change this slightly depending on the name of your MapVis instance
 
 }

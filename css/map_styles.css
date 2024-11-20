@@ -5,7 +5,7 @@
 /*    !*  pointer-events: none;	This line needs to be removed *!*/
 /*}*/
 .tooltip.map {
-    width: 150px;
+    width: 200px;
     padding: 10px;
     position: absolute;
     text-align: left;
