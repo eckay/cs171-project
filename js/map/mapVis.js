@@ -1,3 +1,4 @@
+
 class MapVis {
 
     // constructor method to initialize Timeline object
@@ -46,7 +47,7 @@ class MapVis {
 
         // adjust map position
         vis.map = vis.svg.append("g") // group will contain all state paths
-            .attr("class", "states")
+            .attr("class", "states map")
             // .attr('transform', `scale(${vis.zoom} ${vis.zoom})`)
             .attr(
             'transform',
@@ -57,7 +58,7 @@ class MapVis {
 
 
         vis.tooltip = d3.select("#" + vis.parentElement).append('div')
-            .attr('class', 'tooltip')
+            .attr('class', 'tooltip map')
             .attr("width", vis.width * .4)
             .attr("height", vis.height * .4)
             .attr('id', 'map-tooltip')
@@ -80,7 +81,7 @@ class MapVis {
             .data(vis.US)
             .enter()
             .append("path")
-            .attr('class', 'state')
+            .attr('class', 'state map')
             .attr("d", vis.path)
 
         vis.legendScale = d3.scaleLinear()
@@ -96,10 +97,10 @@ class MapVis {
                 max: d[1]
             };
         })
-        let legendRects = vis.svg.selectAll(".legend-rect")
+        let legendRects = vis.svg.selectAll(".legend-rect.map")
             .data(vis.legendColors)
         legendRects.enter().append("rect")
-            .attr("class", "legend-rect")
+            .attr("class", "legend-rect map")
             .merge(legendRects)
             .attr("x", d => vis.legendScale(d.min)) // starting position for the rectangle. referenced gpt
             .attr("width", d => vis.legendScale(d.max) - vis.legendScale(d.min)) // determine width based off of inversion. referenced gpt
@@ -128,7 +129,7 @@ class MapVis {
         // Convert the Set to an array for easy handling
         uniqueStatuses = Array.from(uniqueStatuses);
 
-        // let allCategories = d3.selectAll('#categorySelector').data(uniqueStatuses)
+        // let allCategories = d3.selectAll('#mapCategorySelector').data(uniqueStatuses)
         //
         // allCategories.enter().append("option")
         //         .merge(allCategories)
@@ -172,7 +173,7 @@ class MapVis {
     totalStatusByState()
     {
         let vis = this
-        vis.selectedCategory =  document.getElementById('categorySelector').value;
+        vis.selectedCategory =  document.getElementById('mapCategorySelector').value;
 
         let bannedBooksByState = {};
 
@@ -203,7 +204,7 @@ class MapVis {
 
 
         let vis = this
-        vis.selectedCategory =  document.getElementById('categorySelector').value;
+        vis.selectedCategory =  document.getElementById('mapCategorySelector').value;
 
         vis.tallyStatusByState = vis.totalStatusByState()
         vis.topBooksByState = vis.highestBooksByState()
@@ -242,7 +243,7 @@ class MapVis {
                console.log(d3.geoCentroid(d)[1])
                let stateLabel = vis.svg.selectAll(`#${name}-label`).data(d)
                stateLabel.enter().append("text")
-                   .class(`#${name}-label`)
+                   .class(`#${name}-label map`)
                    .merge(stateLabel)
                    .text(tally === 0 ? "" : tally)
                    // .attr("transform", `translate(${d3.geoCentroid(d)[0] * -1}, ${d3.geoCentroid(d)[1]})`)

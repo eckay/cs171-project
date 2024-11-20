@@ -34,29 +34,16 @@ Promise.all(promises)
 // initMainPage
 function initMainPage(dataArray) {
 
-    // // log data
-    // console.log('check out the data', dataArray);
-    //
-    // // init table
-    // myDataTable = new DataTable('tableDiv', dataArray[1], dataArray[2]);
-    //
-    // // TODO - init map
     myMapVis = new MapVis('mapDiv', dataArray[0], dataArray[1]);
-    //
-    // // TODO - init bars
-    //
-    // myBarVisOne = new BarVis('barDiv', descending = true, dataArray[1], dataArray[2])
-    // myBarVisTwo = new BarVis('barTwoDiv', descending = false, dataArray[1], dataArray[2])
-
     // // init brush
     // myBrushVis = new BrushVis('brushDiv', dataArray[1]);
 }
-function categoryChange() {
+function mapCategoryChange() {
     myMapVis.selectedCategory =  document.getElementById('categorySelector').value;
     myMapVis.wrangleData(); // maybe you need to change this slightly depending on the name of your MapVis instance
-
-    myBarVisOne.wrangleData();
-    myBarVisTwo.wrangleData();
+    //
+    // myBarVisOne.wrangleData();
+    // myBarVisTwo.wrangleData();
 }
 
 

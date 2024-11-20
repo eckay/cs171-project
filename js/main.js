@@ -1,4 +1,5 @@
 
+
 // Scrolling
 new fullpage('#fullpage', {
 	//options here
@@ -9,30 +10,38 @@ new fullpage('#fullpage', {
 // Globals
 let scatterVis;
 let myDataTable,
-    myBrushVis;
+    myBrushVis,
+    myMapVis
 
 let selectedTimeRange = [];
 let selectedState = '';
 
 let promises = [
+    // general data
     d3.csv("data/pen_2324.csv"),
     d3.json("data/goodreads_banned100.json"),
     d3.csv("data/kaggle_books.csv"),
-    d3.csv("data/mergedBooks.csv")
+    d3.csv("data/mergedBooks.csv"),
+
+    // map-specific data
+    d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"),
+
 ];
 
 Promise.all(promises)
     .then(function (data) {
-        mainStuff(data);
+        initPage(data);
     })
     .catch(function (err) {
         console.log(err)
     });
 
-function mainStuff(data) {
+function initPage(data) {
     let penn_data = data[0];
     let goodreads100 = data[1];
     let kaggle = data[2];
+    let mergedBooks = data[3];
+    let geoStates = data[4];
 
     // Convert type all together here
     kaggle.forEach((book) => {
@@ -59,5 +68,15 @@ function mainStuff(data) {
     // Brushable table
     myDataTable = new DataTable('tableDiv', data[3]);
     myBrushVis = new BrushVis('brushDiv', data[3]);
+
+    // mapVis
+    myMapVis = new MapVis('mapDiv', geoStates, mergedBooks);
+
 }
 
+// map category changes
+function categoryChange() {
+    myMapVis.selectedCategory =  document.getElementById('categorySelector').value;
+    myMapVis.wrangleData(); // maybe you need to change this slightly depending on the name of your MapVis instance
+
+}
