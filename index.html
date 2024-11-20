@@ -22,15 +22,45 @@
     <div id="fullpage">
         <div class="section container-fluid">
             <div class="row justify-content-center">
+                <p style="text-align: center">Most banned book 2023-24 compared to highly read, rated books</p>
                 <div class="col-10 content-box1" id="scatter-area">
                 </div>
             </div>
             
         </div>
         <div class="section container-fluid">
-            <div class="row" id="page1">
-                <div class="col-12 content-box">
-                    <p style="text-align: center">Content here</p>
+            <div class="row justify-content-center">
+                <div class="col-10 content-box" id="">
+                    <div class="row">
+                        <div class="col">
+                            <div id="tableDiv" style="overflow-y: scroll; height: 50vh; width:90vw; padding: 20px; border: thin solid grey; border-radius: 5px; background: rgba(64,64,64,0.4);"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" id="brushDiv" style="height: 100%; width:100%;"></div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-10 content-box" id="graph-area">
+                    <img src="images/graph-img.jpeg" height="300"> 
+                </div>
+            </div>
+        </div>
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-10 content-box" id="boxplot-area">
+                    <img src="images/boxplots-img.png" width="500"> 
+                </div>
+            </div>
+        </div>
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-10 content-box" id="map-area">
+                    <img src="images/map-img.png" height="500"> 
                 </div>
             </div>
         </div>
@@ -50,7 +80,12 @@
 
     <!-- Load data, create visualizations -->
     <script src="js/ek_js/scattervis.js"></script>
-    <script src="js/ek_js/main.js"></script>
+    <script src="js/main.js"></script>
+
+    <script src="js/table-js/brushVis.js"></script>
+    <script src="js/table-js/dataTable.js"></script>
+    <script src="js/table-js/helpers.js"></script>
+    
 
 
 </body>

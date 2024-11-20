@@ -4,8 +4,10 @@
     padding-top: 3vh;
 }
 
-#page1 {
-    background-color: antiquewhite;
+#table-area {
+    height: 97vh;
+    padding-bottom: 1vh;
+    padding-top: 3vh;
 }
 
 .content-box {
@@ -13,7 +15,6 @@
 }
 
 .content-box1 {
-    background-color: azure;
     border-radius: 5px;
     height: 90vh;
 }
