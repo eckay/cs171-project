@@ -4,6 +4,19 @@
 /*    font: 12px sans-serif;*/
 /*    !*  pointer-events: none;	This line needs to be removed *!*/
 /*}*/
+#mapDiv {
+    height: 90%;
+    width:90%;
+    margin-top:20px;
+    margin-bottom:200px;
+}
+.custom-select.map {
+    width: 10%;
+    border-radius: 5px;
+    margin: 20px;
+    border-color: lightblue;
+
+}
 .tooltip.map {
     width: 200px;
     padding: 10px;

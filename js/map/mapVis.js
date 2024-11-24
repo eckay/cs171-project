@@ -85,37 +85,20 @@ class MapVis {
             .attr('class', 'state map')
             .attr("d", vis.path)
 
-        // vis.legendScale = d3.scaleLinear()
-        //     .domain(vis.colors.domain())
-        //     .range([0, 200]); // determines width of the overall legend, and position of each
-        //
-        // vis.legendColors = vis.colors.range().map( // referenced gpt on how to create object from list. covered in class previously
-        //     color => {
-        //     const d = vis.colors.invertExtent(color); // used previously in class, modified  to output a range of px values for each color, later used to define width
-        //     return {
-        //         color: color,
-        //         min: d[0],
-        //         max: d[1]
-        //     };
-        // })
-        // let legendRects = vis.svg.selectAll(".legend-rect.map")
-        //     .data(vis.legendColors)
-        // legendRects.enter().append("rect")
-        //     .attr("class", "legend-rect map")
-        //     .merge(legendRects)
-        //     .attr("x", d => vis.legendScale(d.min)) // starting position for the rectangle. referenced gpt
-        //     .attr("width", d => vis.legendScale(d.max) - vis.legendScale(d.min)) // determine width based off of inversion. referenced gpt
-        //     .attr("height", 20)
-        //     .attr("transform", `translate(${vis.width - 225 - 20}, ${vis.height - 30 - 20})`)
-        //     .style("fill", d => d.color);
+        // Legend color. Referenced https://www.visualcinnamon.com/2016/05/smooth-color-legend-d3-svg-gradient/, and GPT for debugging
         let legendWidth = 300;
         let legendHeight = 20;
 
-        let svgLegend = vis.svg // Replace with the specific container for the legend
+        let svgLegend = d3.select("#mapDiv")
             .append("svg")
-            .attr("class","svg-legend")
+            .attr("class", "svg-legend")
             .attr("width", legendWidth + 50)
-            .attr("height", legendHeight);
+            .attr("height", legendHeight + 40)
+            .attr("transform", `translate(${vis.width - (legendWidth + 50)}, ${legendHeight})`);
+
+    // Group for legend content
+        let legendGroup = svgLegend.append("g")
+            .attr("transform", `translate(${legendWidth / 2}, ${legendHeight})`);
 
         const gradient = svgLegend.append("defs")
             .append("linearGradient")
@@ -125,23 +108,22 @@ class MapVis {
             .attr("x2", "100%")
             .attr("y2", "0%");
 
-    // Add color stops to the gradient
-            gradient.append("stop")
-                .attr("offset", "0%")
-                .attr("stop-color", vis.colors(vis.colors.domain[0]));
+      // adds color range for gradient
+        gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", vis.colors(vis.colors.domain()[0]));
 
-            gradient.append("stop")
-                .attr("offset", "100%")
-                .attr("stop-color", vis.colors(vis.colors.domain[1]));
+        gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", vis.colors(vis.colors.domain()[1]));
 
-    // Add a rectangle with the gradient
-            svgLegend.append("rect")
-                .attr("x", 20)
-                .attr("y", 20)
+     // create rectangle with the fill of the gradient  just made
+            legendGroup.append("rect")
+                .attr("x", 0)
+                .attr("y", 0)
                 .attr("width", legendWidth)
                 .attr("height", legendHeight)
                 .style("fill", "url(#legend-gradient)");
-
 
 
         // wrangleData
