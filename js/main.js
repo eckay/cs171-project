@@ -1,4 +1,5 @@
 
+
 // Scrolling
 new fullpage('#fullpage', {
 	//options here
@@ -10,12 +11,12 @@ new fullpage('#fullpage', {
 let scatterVis;
 let myDataTable,
     myBrushVis,
-    myMapVis;
 
 let selectedTimeRange = [];
 let selectedState = '';
 
 let promises = [
+    // general data
     d3.csv("data/pen_2324.csv"),
     d3.json("data/goodreads_banned100.json"),
     d3.csv("data/kaggle_books.csv"),
@@ -23,24 +24,26 @@ let promises = [
 
     // map-specific data
     d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"),
+
     // goodreads tag data
     d3.json("data/banned100_characteristics.json")
 ];
 
 Promise.all(promises)
     .then(function (data) {
-        mainStuff(data);
+        initPage(data);
     })
     .catch(function (err) {
         console.log(err)
     });
 
-function mainStuff(data) {
+function initPage(data) {
     let penn_data = data[0];
     let goodreads100 = data[1];
     let kaggle = data[2];
     let mergedBooks = data[3];
     let geoStates = data[4];
+
     let book_characteristics = data[5];
 
     // Convert type all together here
@@ -84,16 +87,14 @@ function mainStuff(data) {
 
     // Bubbles sortable by tag
     tagBubbles = new tagVis("tagbubbles-area", book_characteristics);
+
 }
 
 // map category changes
 function mapCategoryChange() {
     //myMapVis.selectedCategory =  document.getElementById('mapCategorySelector').value;
     myMapVis.wrangleData(); // maybe you need to change this slightly depending on the name of your MapVis instance
-
 }
-
-
 
 function tagChecked() {
     // from https://stackoverflow.com/a/61598154
@@ -101,3 +102,4 @@ function tagChecked() {
     
     tagBubbles.boxCheck(selectedboxes);
 }
+

@@ -13,8 +13,10 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- fullpage.js -->
     <link rel="stylesheet" type="text/css" href="css/fullpage.css" />    
+
     <link rel="stylesheet" type="text/css" href="css/map_styles.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />  
+
 
 </head>
 <body>
@@ -28,6 +30,15 @@
             </div>
             
         </div>
+        <div class="section container-fluid" id="mapDiv"
+             style="height: 100%; width:100%; margin-top:20px; margin-bottom:200px;">
+            <select id='mapCategorySelector' class="custom-select align-self-center" style="width: 20%" onchange="mapCategoryChange()">
+                <option value="all ban types" selected>All Ban Types</option>
+                <option value="banned">Banned</option>
+                <option value="banned pending investigation">Banned pending investigation</option>
+                <option value="banned by restriction">Banned by restriction</option>
+            </select>
+        </div>
         <div class="section container-fluid">
             <div class="row justify-content-center">
                 <div class="col-10 content-box" id="">
@@ -39,7 +50,7 @@
                     <div class="row">
                         <div class="col" id="brushDiv" style="height: 100%; width:100%;"></div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -126,6 +137,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 
 
@@ -143,6 +155,7 @@
     <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+
 
     <!-- fullpage.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.15/fullpage.min.js"></script>
