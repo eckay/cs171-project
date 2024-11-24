@@ -13,10 +13,10 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- fullpage.js -->
     <link rel="stylesheet" type="text/css" href="css/fullpage.css" />    
-    
-    <link rel="stylesheet" type="text/css" href="css/styles.css" />
 
     <link rel="stylesheet" type="text/css" href="css/map_styles.css" />
+    <link rel="stylesheet" type="text/css" href="css/styles.css" />  
+
 
 </head>
 <body>
@@ -24,7 +24,7 @@
     <div id="fullpage">
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <p style="text-align: center">Most banned book 2023-24 compared to highly read, rated books</p>
+                <p id="scatterTitle" style="text-align: center">Are the most frequently banned books popular or well-rated?</p>
                 <div class="col-10 content-box1" id="scatter-area">
                 </div>
             </div>
@@ -54,10 +54,72 @@
                 </div>
             </div>
         </div>
+
+        <div class="section container-fluid" id="mapDiv" style="height: 100%; width:100%; margin-top:20px; margin-bottom:200px;">
+            <select id='mapCategorySelector' class="custom-select align-self-center" style="width: 20%" onchange="mapCategoryChange()">
+                <option value="all ban types" selected>All Ban Types</option>
+                <option value="banned">Banned</option>
+                <option value="banned pending investigation">Banned pending investigation</option>
+                <option value="banned by restriction">Banned by restriction</option>
+            </select>
+        </div>
+
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <div class="col-10 content-box" id="graph-area">
-                    <img src="images/graph-img.jpeg" height="300"> 
+                <div class="col">
+                    <h3>Books are often banned for dealing with these topics</h3>
+                    <p>Tick boxes to see how many of the 100 most banned books of 2023-24 include all the selected topics</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-10 content-box1" id="tagbubbles-area">
+                    
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <div>
+                        <input type="checkbox" class="tags" id="tag1" value="sexually-explicit" onclick="tagChecked()">
+                        <label for="tag1">Sexually explicit</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="tags" id="tag2" value="sexual-assault" onclick="tagChecked()">
+                        <label for="tag2">Sexual assault</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="tags" id="tag3" value="abuse" onclick="tagChecked()">
+                        <label for="tag3">Abuse</label>
+                    </div>
+                </div>
+
+                <div class="col-5">
+                    <div>
+                        <input type="checkbox" class="tags" id="tag4" value="mental-health" onclick="tagChecked()">
+                        <label for="tag4">Mental health or mental illness</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="tags" id="tag5" value="lgbtq" onclick="tagChecked()">
+                        <label for="tag5">LGBTQ+ themes or homophobia</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="tags" id="tag6" value="explores-race" onclick="tagChecked()">
+                        <label for="tag6">Race or racism</label>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div>
+                        <input type="checkbox" class="tags" id="tag7" value="drugs" onclick="tagChecked()">
+                        <label for="tag7">Drug abuse or addiction</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="tags" id="tag8" value="death" onclick="tagChecked()">
+                        <label for="tag8">Death or grief</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="tags" id="tag9" value="profanity" checked onclick="tagChecked()">
+                        <label for="tag9">Profanity</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -70,7 +132,7 @@
         </div>
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <div class="col-10 content-box" id="map-area">
+                <div class="col-11 content-box" id="map-area">
                     <img src="images/map-img.png" height="500"> 
                 </div>
             </div>
@@ -100,6 +162,7 @@
 
     <!-- Load data, create visualizations -->
     <script src="js/ek_js/scattervis.js"></script>
+    <script src="js/ek_js/tagVis.js"></script>
     <script src="js/main.js"></script>
 
     <script src="js/table-js/brushVis.js"></script>
