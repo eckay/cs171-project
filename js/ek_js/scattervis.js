@@ -123,6 +123,7 @@ class scatterChart {
 
 		console.log(d3.min(vis.displayData, (d) => d.ratings_count))
 		console.log(d3.min(vis.displayData, (d) => d.ratings_count) - (d3.min(vis.displayData, (d) => d.ratings_count) / 2))
+		console.log(d3.max(vis.popularBooks, (d) => d.ratings_count))
 		console.log(vis.xScale(10))
 
 		// Axes
