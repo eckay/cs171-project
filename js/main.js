@@ -27,7 +27,10 @@ let promises = [
     d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json"),
 
     // goodreads tag data
-    d3.json("data/banned100_characteristics.json")
+    d3.json("data/banned100_characteristics.json"),
+
+    //bannedmerged for barchart & boxplot
+    d3.csv("data/bannedMerged.csv")
 ];
 
 Promise.all(promises)
@@ -46,6 +49,7 @@ function initPage(data) {
     let geoStates = data[4];
 
     let book_characteristics = data[5];
+    let banned_data = data[6];
 
     // Convert type all together here
     kaggle.forEach((book) => {
@@ -88,6 +92,11 @@ function initPage(data) {
 
     // Bubbles sortable by tag
     tagBubbles = new tagVis("tagbubbles-area", book_characteristics);
+
+    // Boxplot & barchart of reasons 
+    let topReasons = [];
+    myBarVisOne = new BarVis('barvis-area', banned_data);
+    myBoxPlot = new BoxPlotVis('boxplot-area', banned_data, topReasons);
 
 }
 
