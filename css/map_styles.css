@@ -11,7 +11,7 @@
     margin-bottom:200px;
 }
 .custom-select.map {
-    width: 10%;
+    width: 22%;
     border-radius: 5px;
     margin: 20px;
     border-color: lightblue;
@@ -26,6 +26,7 @@
     background-color: rgba(255, 255, 255, 0.8); /* Translucent white background, referenced GPT */
     border-radius: 4px;
     /*  pointer-events: none;	This line needs to be removed */
+    color: black;
 }
 .tooltip.map h3,h4 {
     text-align: left;

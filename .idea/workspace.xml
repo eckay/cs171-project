@@ -5,14 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="774ef717-d10a-4321-839b-7854e6301701" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/css/tester_styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles-tester.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/css/fullpage.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/fullpage.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/banned100_characteristics.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/banned100_characteristics.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/goodreads_banned100.json" beforeDir="false" afterPath="$PROJECT_DIR$/data/goodreads_banned100.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/map_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/map_styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/css/tester_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/css/tester_styles.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/main.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +76,7 @@
       <workItem from="1732063507998" duration="1859000" />
       <workItem from="1732065564328" duration="16623000" />
       <workItem from="1732239462593" duration="623000" />
-      <workItem from="1732486306974" duration="4270000" />
+      <workItem from="1732486306974" duration="6332000" />
     </task>
     <servers />
   </component>

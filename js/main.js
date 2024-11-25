@@ -11,7 +11,9 @@ new fullpage('#fullpage', {
 let scatterVis;
 let myDataTable,
     myBrushVis,
-    myMapVis;
+    myMapVis,
+    myBarVisOne;
+
 
 let selectedTimeRange = [];
 let selectedState = '';
