@@ -1,5 +1,5 @@
 class scatterChart {
-    // constructor method to initialize StackedAreaChart object
+    
 	constructor(parentElement, bannedData, popularData) {
 		this.parentElement = parentElement;
 		this.bannedData = bannedData;
@@ -79,8 +79,8 @@ class scatterChart {
 
 		// For timelines things
 		console.log(vis.bannedData)
-		console.log(d3.group(vis.bannedData, d => d.publication_year).get(vis.bannedData[100].publication_year))
-		console.log(d3.group(vis.bannedData, d => d.publication_year).get(vis.bannedData[100].publication_year).indexOf(vis.bannedData[100]))
+		//console.log(d3.group(vis.bannedData, d => d.publication_year).get(vis.bannedData[100].publication_year))
+		//console.log(d3.group(vis.bannedData, d => d.publication_year).get(vis.bannedData[100].publication_year).indexOf(vis.bannedData[100]))
 
 		// Highest rated
 		vis.popularData.filter((book) => book.ratings_count > 1000).sort((a, b) => b.average_rating - a.average_rating).slice(0, 100).forEach(book => {
@@ -122,6 +122,8 @@ class scatterChart {
         vis.xScale.domain([d3.min(vis.displayData, (d) => d.ratings_count) - (d3.min(vis.displayData, (d) => d.ratings_count) / 2), d3.max(vis.popularBooks, (d) => d.ratings_count)]);
 
 		console.log(d3.min(vis.displayData, (d) => d.ratings_count))
+		console.log(d3.min(vis.displayData, (d) => d.ratings_count) - (d3.min(vis.displayData, (d) => d.ratings_count) / 2))
+		console.log(d3.max(vis.popularBooks, (d) => d.ratings_count))
 		console.log(vis.xScale(10))
 
 		// Axes
@@ -180,14 +182,24 @@ class scatterChart {
 
                 vis.tooltip
                     .style("opacity", 1)
-                    .style("left", event.pageX + 20 + "px")
-                    .style("top", event.pageY + "px")
                     .html(`
                         <div style="border: thin solid grey; border-radius: 5px; background: white; padding: 20px">
                             <h3>${d.title}</h3>
 							<img src=${d.image_url} alt="Cover of ${d.title}" height="150">
 							<p><i>click for more info</i></p>             
-                        </div>`);     
+                        </div>`); 
+
+				let tooltipHeight = document.getElementById("tooltip").getBoundingClientRect().height;
+				let parentSize = document.getElementById(vis.parentElement).getBoundingClientRect();
+
+				vis.tooltip
+					.style("left", () => {
+						return event.pageX + 20 + "px";
+					})
+					.style("top", () => {
+						return event.pageY + tooltipHeight > parentSize.y + parentSize.height ?  event.pageY - tooltipHeight + "px" : event.pageY + "px";
+					})
+				//console.log("bounded", document.getElementById("tooltip").getBoundingClientRect())
             })
             .on('mouseout', function(event, d){
                 d3.select(this)
@@ -271,7 +283,7 @@ class scatterChart {
 
 		let imageHeight = vis.height * 0.4;
 		
-		vis.infoBox
+		let coverImage = vis.infoBox
 			.append("image")
 			.attr("xlink:href", book.image_url)
 			.attr("id", "coverImage")
@@ -285,12 +297,22 @@ class scatterChart {
 			.attr("x", vis.width - vis.margin.right - vis.circleRadius * 3)
 			.attr("y", vis.circleRadius * 5)
 			.attr("text-anchor", "end")
-			.text(`${book.title}`)
+			.text(`${book.title}`);
 		
-		let image_y = parseInt(d3.select("#coverImage").attr("y"));
-		let image_x = parseInt(d3.select("#coverImage").attr("y"));
+		let coverImg = coverImage.node().getBBox();
+		//let image_x = parseInt(d3.select("#coverImage").attr("y"));
+
+		// Ratings
+		console.log("image width", coverImg)
+		vis.infoBox
+			.append("text")
+			.attr("x", coverImg.x + coverImg.width + vis.circleRadius * 3)
+			.attr("y", coverImg.y)
+			//.attr("text-anchor", "end")
+			.text(`Average Goodreads rating: ${book.average_rating}`)
 
 		// Additional info
+		/*
 		let additionalInfo = d3.select("body").append('div')
 			.attr('id', "additionalInfo")
 			.attr("class", "tooltip")
@@ -304,7 +326,7 @@ class scatterChart {
 					<p>#ratings: ${book.ratings_count}</p>
 					<p>etc etc would like reasons here</p>         
 				</div>`);   
-		
+		*/
 		d3.select("circle.selected")
 			.attr("fill", "red")
 			.on('click', function(event, d) {
@@ -312,8 +334,9 @@ class scatterChart {
 				vis.infoBox
 					.remove();
 
-				additionalInfo
+				/*additionalInfo
 					.remove();
+				*/
 
 				d3.select(this)
 					.attr("class", "banned")
@@ -329,6 +352,9 @@ class scatterChart {
 
 	timelineSort(){
 		let vis = this;
+
+		d3.select("#scatterTitle")
+			.text("When were the most frequently banned books of 2023-24 published?")
 
 		vis.yAxisG
 			.transition()
@@ -357,12 +383,15 @@ class scatterChart {
 			.attr("cy", (d) => {
 				console.log(d3.group(vis.bannedData, row => row.publication_year))
 				let yearIndex =  d3.group(vis.bannedData, row => row.publication_year).get(d.publication_year).indexOf(d);
-				return vis.height - (yearIndex * vis.circleRadius * 2.1) - vis.circleRadius * 1.5;
+				return vis.height - (yearIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
 			})
 	
 		
 		vis.timelineTrigger
 			.on("click", function(){
+				d3.select("#scatterTitle")
+					.text("Are the most frequently banned books popular or well-rated?")
+
 				vis.updateVis()
 			})
 	}
