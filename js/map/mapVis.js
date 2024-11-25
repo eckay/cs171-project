@@ -6,20 +6,15 @@ class MapVis {
         this.parentElement = parentElement;
         this.geoData = geoData;
         this.bookData = bookData;
-        // this.covidData = covidData;
-        // this.usaData = usaData;
 
-        //console.log(bookData);
         this.displayData = [];
-        this.colors = d3.scaleSequential()
-            .interpolator(t => d3.interpolateBlues(0.15 + t * 0.8)); // referenced gpt: skips the lightest 20% of the range
+        this.colors = d3.scaleSequential().interpolator(t => d3.interpolateBlues(0.15 + t * 0.8)); // referenced gpt: skips the lightest 20% of the range
         // .range(["#6f9c3d", "#a5c90f",
         //     "#ffb366", "#ff8829", "#fe6b40", "#a22626"]);
         //     .range(["#6f9c3d", "#a5c90f",
         //         "#ff8829", "#A2264B", "#A2264B", "#A2264B"]);
 
-        // parse date method
-        this.parseDate = d3.timeParse("%m/%d/%Y");
+       this.playingGame = false;
 
         this.initVis()
     }
@@ -233,51 +228,44 @@ class MapVis {
     updateVis() {
         let vis = this;
 
-        //console.log("updating vis")
-        d3.selectAll(".state").each(function(d)
-        { // d represents vis.world data bound to each element
-           try
-           {
-               let name = d.properties.name
-               // console.log("tally", vis.topBooksByState[d.properties.name] ? vis.tallyStatusByState[d.properties.name] : 0)
-               let tally =  vis.tallyStatusByState[name]  ? vis.tallyStatusByState[name] : 0
-               let color = vis.colors(tally);
+        if(vis.playingGame)
+        {
+            vis.tooltip.style("opacity", 0)
+            let guessingStatusDiv = vis.svg.select("#guessing-status-div")
+            append("div")
+        }
+        else
+        {
+            d3.selectAll(".state").each(function(d)
+            { // d represents vis.world data bound to each element
+                try
+                {
+                    let name = d.properties.name
+                    // console.log("tally", vis.topBooksByState[d.properties.name] ? vis.tallyStatusByState[d.properties.name] : 0)
+                    let tally =  vis.tallyStatusByState[name]  ? vis.tallyStatusByState[name] : 0
+                    let color = vis.colors(tally);
 
-               d3.select(this)
-                   .style("fill", color)
-                   //.style("opacity", .8)
-                   .text(tally === 0 ? "" : tally)
+                    d3.select(this)
+                        .style("fill", color)
+                        .text(tally === 0 ? "" : tally)
 
-               let stateLabel = vis.svg.selectAll(`#${name}-label`).data(d)
-               stateLabel.enter().append("text")
-                   .class(`#${name}-label map`)
-                   .merge(stateLabel)
-                   .text(tally === 0 ? "" : tally)
-                   // .attr("transform", `translate(${d3.geoCentroid(d)[0] * -1}, ${d3.geoCentroid(d)[1]})`)
-                   .attr("x", 0) // X-coordinate of state centroid
-                   .attr("y", 0) // Y-coordinate of state centroid
-                   .attr("text-anchor", "middle")
-                   .attr("font-size", "50px")
+                }
+                catch
+                {
+                    //console.log("region/state not in data: ", d.properties.name)
+                }
+            });
 
-           }
-           catch
-           {
-              //console.log("region/state not in data: ", d.properties.name)
-           }
-        });
+            d3.selectAll(".state").on('mouseover', function(event, d) {
 
-
-
-        d3.selectAll(".state").on('mouseover', function(event, d) {
-
-            let state = d.properties.name
-            let stateData = vis.topBooksByState[state] != undefined ? vis.topBooksByState[state] : {
+                let state = d.properties.name
+                let stateData = vis.topBooksByState[state] != undefined ? vis.topBooksByState[state] : {
                     title: "NA",
                     authors: "NA",
                     reason_banned: "NA",
                     totalRatings: "NA"
-            }
-            vis.tooltip.html(`
+                }
+                vis.tooltip.html(`
                             <h3>${state}'s Top Banned Book</h3>
                             Title: ${stateData.title} <br><br>
                             Authors: ${stateData.authors} <br><br>
@@ -285,25 +273,35 @@ class MapVis {
                             Total Ratings: ${stateData.totalRatings} <br><br>
                         `);
 
-            // Get the bounding rectangle of the hovered element. referenced GPT
-            let { x, y } = this.getBoundingClientRect();
-            let positionFactor = -180
+                // Get the bounding rectangle of the hovered element. referenced GPT
+                let { x, y } = this.getBoundingClientRect();
+                let positionFactor = -180
 
 
-            vis.tooltip.style("opacity", 1)
-                .style("top", `${y}px`)//.attr("transform", "translate(" +x + "," + y + ")")
-                .style("left", `${x <= 150 ? x : x + positionFactor}px`)
+                vis.tooltip.style("opacity", 1)
+                    .style("top", `${y}px`)//.attr("transform", "translate(" +x + "," + y + ")")
+                    .style("left", `${x <= 150 ? x : x + positionFactor}px`)
 
-        })
+            })
+        }
+
+
+
+
+
+
 
     }
 
-    playGuessingGame()
-    {
-        let vis = this
-        vis.tooltip.style("opacity", 0)
-
-    }
+    // playGuessingGame()
+    // {
+    //     let vis = this
+    //     vis.tooltip.style("opacity", 0)
+    //
+    //     console.log(vis.highestBooksByState())
+    //
+    //
+    // }
 
 
 }

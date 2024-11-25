@@ -115,3 +115,10 @@ function tagChecked() {
     tagBubbles.boxCheck(selectedboxes);
 }
 
+function playGuessingGame()
+{
+    myMapVis.playingGame = true;
+    myMapVis.updateVis();
+
+
+}
