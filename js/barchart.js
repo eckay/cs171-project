@@ -1,82 +1,176 @@
-d3.csv("data/bannedBooks.csv").then(function(data) {
-    // Step 1: Extract and process the "Reason" column
-    let reasons = data.map(d => d.Reason).join(" "); // Combine all reasons into one string
-    let stopwords = new Set(["and", "the", "for", "was", "to", "it", "with", "of", "a", "in", "on", "that", "is", "be", "as"]); // Add more as needed
+class BarVis {
+    constructor(parentElement, bookData) {
+        this.parentElement = parentElement;
+        this.bookData = bookData;
+        this.topWords = [];
+        this.initVis();
+    }
 
-    // Clean and split the words
-    let words = reasons
-        .toLowerCase() // Convert to lowercase
-        .replace(/[.,!?;:()"]/g, "") // Remove punctuation
-        .split(/\s+/) // Split by whitespace
-        .filter(word => word && !stopwords.has(word)); // Remove stopwords and empty strings
+    initVis() {
+        let vis = this;
 
-    // Count word occurrences
-    let wordCounts = {};
-    words.forEach(word => {
-        wordCounts[word] = (wordCounts[word] || 0) + 1;
-    });
+        vis.margin = { top: 20, right: 20, bottom: 50, left: 50 };
+        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
+        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
-    // Step 2: Get the top 10 most common words
-    let topWords = Object.entries(wordCounts) // Convert to array of [word, count]
-        .sort((a, b) => b[1] - a[1]) // Sort by count in descending order
-        .slice(0, 10); // Get the top 10 words
+        vis.svg = d3.select(`#${vis.parentElement}`).append("svg")
+            .attr("width", vis.width + vis.margin.left + vis.margin.right)
+            .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+            .append("g")
+            .attr("transform", `translate(${vis.margin.left}, ${vis.margin.top})`);
 
-    // Prepare data for D3
-    let chartData = topWords.map(([word, count]) => ({ word, count }));
+        vis.xScale = d3.scaleBand().range([0, vis.width]).padding(0.1);
+        vis.yScale = d3.scaleLinear().range([vis.height, 0]);
 
-    // Step 3: Create the bar chart
-    const margin = { top: 20, right: 30, bottom: 50, left: 50 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
+        vis.xAxis = vis.svg.append("g")
+            .attr("class", "x-axis")
+            .attr("transform", `translate(0, ${vis.height})`);
 
-    const svg = d3.select("body")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
+        vis.yAxis = vis.svg.append("g")
+            .attr("class", "y-axis");
 
-    // Scales
-    const x = d3.scaleBand()
-        .domain(chartData.map(d => d.word))
-        .range([0, width])
-        .padding(0.1);
+        vis.svg.append('text')
+            .attr('class', 'title')
+            .attr('x', vis.width / 2)
+            .attr('y', -10)
+            .attr('text-anchor', 'middle')
+            .text('Top 10 Most Frequently Banned Books');
 
-    const y = d3.scaleLinear()
-        .domain([0, d3.max(chartData, d => d.count)])
-        .nice()
-        .range([height, 0]);
+        vis.wrangleData();
+    }
 
-    // Axes
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x))
-        .selectAll("text")
-        .attr("transform", "rotate(-45)")
-        .style("text-anchor", "end");
+    wrangleData() {
+        let vis = this;
 
-    svg.append("g")
-        .call(d3.axisLeft(y));
+        let reasons = vis.bookData
+            .map(d => d.Reason)
+            .filter(d => d)
+            .join(" ")
+            .toLowerCase();
 
-    // Bars
-    svg.selectAll(".bar")
-        .data(chartData)
-        .enter()
-        .append("rect")
-        .attr("class", "bar")
-        .attr("x", d => x(d.word))
-        .attr("y", d => y(d.count))
-        .attr("width", x.bandwidth())
-        .attr("height", d => height - y(d.count))
-        .attr("fill", "steelblue");
+        reasons = reasons.replace(/[.,!?;:()"]/g, "");
+        let words = reasons.split(/\s+/);
 
-    // Add labels
-    svg.selectAll(".label")
-        .data(chartData)
-        .enter()
-        .append("text")
-        .attr("x", d => x(d.word) + x.bandwidth() / 2)
-        .attr("y", d => y(d.count) - 5)
-        .attr("text-anchor", "middle")
-        .text(d => d.count);
-});
+        let stopwords = new Set(["thought","characters","lgbt","additional", "promote","because", "banned", "challenged","and", "the", "for", "was", "to", "it", "with", "of", "a", "in", "on", "that", "is", "be", "as"]);
+        let filteredWords = words.filter(word => word && !stopwords.has(word));
+
+        let bigrams = [];
+        for (let i = 0; i < filteredWords.length - 1; i++) {
+            bigrams.push(`${filteredWords[i]} ${filteredWords[i + 1]}`);
+        }
+
+        let bigramCounts = {};
+        bigrams.forEach(bigram => {
+            bigramCounts[bigram] = (bigramCounts[bigram] || 0) + 1;
+        });
+
+        let sortedBigrams = Object.entries(bigramCounts)
+            .sort((a, b) => b[1] - a[1])
+            .map(([bigram, count]) => ({ word: bigram, count }));
+
+        let usedWords = new Set();
+        vis.topWords = [];
+
+        sortedBigrams.forEach(bigramObj => {
+            let [word1, word2] = bigramObj.word.split(" ");
+            if (!usedWords.has(word1) && !usedWords.has(word2)) {
+                vis.topWords.push(bigramObj);
+                usedWords.add(word1);
+                usedWords.add(word2);
+            }
+
+            if (vis.topWords.length >= 10) {
+                return;
+            }
+        });
+
+        vis.topWords = vis.topWords.slice(0, 10);
+
+        topReasons = vis.topWords;
+
+        vis.updateVis();
+
+    }
+
+
+
+    wrangleData2() {
+        //this one does stand alone words
+        let vis = this;
+
+        let reasons = vis.bookData
+            .map(d => d.Reason)
+            .filter(d => d) // Exclude null/undefined/empty values
+            .join(" ")
+            .toLowerCase();
+
+        console.log("Combined Reasons:", reasons);
+
+        reasons = reasons.replace(/[.,!?;:()"]/g, "");
+        let words = reasons.split(/\s+/);
+
+        console.log("Extracted Words:", words);
+
+        let stopwords = new Set(["challenged","because","unsuited","viewpoint","and", "the", "for", "was", "to", "it", "with", "of", "a", "in", "on", "that", "is", "be", "as"]);
+        let filteredWords = words.filter(word => word && !stopwords.has(word));
+
+        console.log("Filtered Words:", filteredWords);
+
+        let wordCounts = {};
+        filteredWords.forEach(word => {
+            wordCounts[word] = (wordCounts[word] || 0) + 1;
+        });
+
+        console.log("Word Counts:", wordCounts);
+
+        vis.topWords = Object.entries(wordCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([word, count]) => ({ word, count }));
+
+        console.log("Top Words:", vis.topWords);
+
+        vis.updateVis();
+    }
+
+
+    updateVis() {
+        let vis = this;
+
+        vis.xScale.domain(vis.topWords.map(d => d.word));
+        vis.yScale.domain([0, d3.max(vis.topWords, d => d.count)]);
+
+        vis.xAxis.call(d3.axisBottom(vis.xScale)).selectAll("text")
+            .attr("transform", "rotate(-45)")
+            .style("text-anchor", "end");
+
+        vis.yAxis.call(d3.axisLeft(vis.yScale));
+
+        let bars = vis.svg.selectAll(".bar")
+            .data(vis.topWords, d => d.word);
+
+        bars.enter()
+            .append("rect")
+            .attr("class", "bar")
+            .attr("x", d => vis.xScale(d.word))
+            .attr("y", d => vis.yScale(d.count))
+            .attr("width", vis.xScale.bandwidth())
+            .attr("height", d => vis.height - vis.yScale(d.count))
+            .attr("fill", "steelblue")
+            .on("mouseover", (event, d) => {
+                d3.select(event.target).attr("fill", "orange");
+            })
+            .on("mouseout", (event, d) => {
+                d3.select(event.target).attr("fill", "steelblue");
+            });
+
+        bars.transition()
+            .duration(500)
+            .attr("x", d => vis.xScale(d.word))
+            .attr("y", d => vis.yScale(d.count))
+            .attr("width", vis.xScale.bandwidth())
+            .attr("height", d => vis.height - vis.yScale(d.count));
+
+        bars.exit().remove();
+    }
+}
