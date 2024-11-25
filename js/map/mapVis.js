@@ -125,8 +125,6 @@ class MapVis {
                 .attr("height", legendHeight)
                 .style("fill", "url(#legend-gradient)");
 
-
-        // wrangleData
         vis.wrangleData()
     }
 
@@ -144,14 +142,6 @@ class MapVis {
 
         // Convert the Set to an array for easy handling
         uniqueStatuses = Array.from(uniqueStatuses);
-
-        // let allCategories = d3.selectAll('#mapCategorySelector').data(uniqueStatuses)
-        //
-        // allCategories.enter().append("option")
-        //         .merge(allCategories)
-        //         .attr("value", d => d.toLowerCase())
-
-        //console.log("uniqueStatuses", uniqueStatuses);
 
         return(uniqueStatuses);
     }
@@ -258,8 +248,6 @@ class MapVis {
                    //.style("opacity", .8)
                    .text(tally === 0 ? "" : tally)
 
-
-               //console.log(d3.geoCentroid(d)[1])
                let stateLabel = vis.svg.selectAll(`#${name}-label`).data(d)
                stateLabel.enter().append("text")
                    .class(`#${name}-label map`)
@@ -278,34 +266,9 @@ class MapVis {
            }
         });
 
-        // let maxProp = d3.max(vis.topBooksByState)
-        // let minProp = d3.min(vis.topBooksByState)
-        //
-        // vis.svg.selectAll(".tick").remove()
-        // let legendScale = d3.scaleLinear()
-        //     .domain([minProp, maxProp]) // Map from 0 to number of colors - 1
-        //     .range([0, 133]); // Range is the width of the legend
-        //
-        // let legendAxis = d3.axisBottom(legendScale)
-        //     .tickValues([maxProp, minProp])
-        // // gets minimum -- cannot duplicate from legendColors since data function not work for axes
-        // ////console.log("legend axis", legendAxis);
-        // let ticks = d3.select(".tick").exit().remove();
-        // vis.svg.append("g")
-        //     .attr("id", "legend-label")
-        //     .attr("transform", `translate(${vis.width - 200 - 45}, ${vis.height - 30})`)
-        //     .call(legendAxis)
-        //     .select(".domain").remove();
 
-        //console.log(d3.selectAll(".state").nodes());
+
         d3.selectAll(".state").on('mouseover', function(event, d) {
-            //console.log("mouseover")
-
-            // topBooksByState[state] = {
-            //     title: title,
-            //     authors: author,
-            //     reason_banned: reason,
-            //     totalRatings: totalRatings
 
             let state = d.properties.name
             let stateData = vis.topBooksByState[state] != undefined ? vis.topBooksByState[state] : {
@@ -333,6 +296,12 @@ class MapVis {
 
         })
 
+    }
+
+    playGuessingGame()
+    {
+        let vis = this
+        vis.tooltip.style("opacity", 0)
 
     }
 
