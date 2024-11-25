@@ -30,15 +30,14 @@
             </div>
             
         </div>
-        <div class="section container-fluid" id="mapDiv"
-
-        >
+        <div class="section container-fluid" id="mapDiv">
             <select id='mapCategorySelector' class="custom-select map align-self-center" onchange="mapCategoryChange()">
                 <option value="all ban types" selected>All Ban Types</option>
                 <option value="banned">Banned</option>
                 <option value="banned pending investigation">Banned pending investigation</option>
                 <option value="banned by restriction">Banned by restriction</option>
             </select>
+            <button id="guessing-game-button" value="false" onClick="playGuessingGame()">Play Guessing Game</button>
         </div>
         <div class="section container-fluid">
             <div class="row justify-content-center">
@@ -119,13 +118,6 @@
             <div class="row justify-content-center">
                 <div class="col-10 content-box" id="boxplot-area">
                     <img src="images/boxplots-img.png" width="500"> 
-                </div>
-            </div>
-        </div>
-        <div class="section container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-11 content-box" id="map-area">
-                    <img src="images/map-img.png" height="500"> 
                 </div>
             </div>
         </div>
