@@ -9,12 +9,10 @@ class MapVis {
 
         this.displayData = [];
         this.colors = d3.scaleSequential().interpolator(t => d3.interpolateBlues(0.15 + t * 0.8)); // referenced gpt: skips the lightest 20% of the range
-        // .range(["#6f9c3d", "#a5c90f",
-        //     "#ffb366", "#ff8829", "#fe6b40", "#a22626"]);
-        //     .range(["#6f9c3d", "#a5c90f",
-        //         "#ff8829", "#A2264B", "#A2264B", "#A2264B"]);
+        //d3.scaleSequential().interpolator(d3.interpolateRgb('#ea3939', '#d54a1e', '#39a105', '#126c04', '#FFFF00', '#BFFF00', '#80FF00', '#40FF00', '#00FF00'))
+            //d3.scaleSequential().interpolator(t => d3.interpolateBlues(0.15 + t * 0.8)); // referenced gpt: skips the lightest 20% of the range
 
-       this.playingGame = false;
+       this.gameStatus = "playing";
 
         this.initVis()
     }
@@ -29,26 +27,24 @@ class MapVis {
 
         // init drawing area
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
+            .attr("id", "us-map")
             .attr("width", vis.width)
             .attr("height", vis.height)
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 
 
-        vis.viewpoint = {'width': 975, 'height': 610};
+        vis.viewpoint = {'width': 875, 'height': 850};
         vis.zoom = vis.width / vis.viewpoint.width;
 
         // code to center. referenced gpt
-        const translateX = vis.width / 2 * (1 - vis.zoom);
-        const translateY = vis.height / 2 * (1 - vis.zoom);
+        const translateX = vis.width / 2 - (vis.width / 2 * vis.zoom);
+        const translateY = vis.height / 2 - (vis.height / 2 * vis.zoom);
 
         // adjust map position
         vis.map = vis.svg.append("g") // group will contain all state paths
             .attr("class", "states map")
             // .attr('transform', `scale(${vis.zoom} ${vis.zoom})`)
-            .attr(
-            'transform',
-            `translate(${translateX}, ${translateY}) scale(${vis.zoom} ${vis.zoom})`
-        );
+            .attr('transform', `translate(${translateX}, ${translateY}) scale(${vis.zoom} ${vis.zoom})`);
 
 
 
@@ -84,7 +80,7 @@ class MapVis {
         let legendWidth = 300;
         let legendHeight = 20;
 
-        let svgLegend = d3.select("#mapDiv")
+        vis.svgLegend = d3.select("#mapSvg")
             .append("svg")
             .attr("class", "svg-legend")
             .attr("width", legendWidth + 50)
@@ -92,10 +88,10 @@ class MapVis {
             .attr("transform", `translate(${vis.width - (legendWidth + 50)}, ${legendHeight})`);
 
     // Group for legend content
-        let legendGroup = svgLegend.append("g")
+        let legendGroup = vis.svgLegend.append("g")
             .attr("transform", `translate(${legendWidth / 2}, ${legendHeight})`);
 
-        const gradient = svgLegend.append("defs")
+        const gradient = vis.svgLegend.append("defs")
             .append("linearGradient")
             .attr("id", "legend-gradient")
             .attr("x1", "0%")
@@ -228,21 +224,44 @@ class MapVis {
     updateVis() {
         let vis = this;
 
-        if(vis.playingGame)
+
+
+        if(vis.gameStatus === "playing")
         {
+            console.log("playing game!")
             vis.tooltip.style("opacity", 0)
-            let guessingStatusDiv = vis.svg.select("#guessing-status-div")
-            append("div")
+            vis.svgLegend.style("opacity", 0);
+            d3.selectAll(".state").style("fill", 'gray')
+            // let guessingStatusDiv = vis.svg.select("#guessing-status-div")
+
+            // color a state green if clicked on and has a banned book. else, if clicked on turn red.
+            d3.selectAll(".state").on('click', function(event, d) {
+
+                let state = d.properties.name
+                let color = vis.topBooksByState[state] != undefined ? 'green' : 'red'
+                d3.select(this).style("fill", color)
+            });
+            //append("div")
+        }
+        else if(vis.gameStatus === "revealing answers")
+        {
+            d3.selectAll(".state").each(function(d)
+            {
+                let state = d.properties.name
+                let color = vis.topBooksByState[state] != undefined ? 'green' : 'red'
+                d3.select(this).style("fill", color)
+            });
         }
         else
         {
+            vis.svgLegend.style("opacity", 1);
             d3.selectAll(".state").each(function(d)
             { // d represents vis.world data bound to each element
                 try
                 {
-                    let name = d.properties.name
+                    let state = d.properties.name
                     // console.log("tally", vis.topBooksByState[d.properties.name] ? vis.tallyStatusByState[d.properties.name] : 0)
-                    let tally =  vis.tallyStatusByState[name]  ? vis.tallyStatusByState[name] : 0
+                    let tally =  vis.tallyStatusByState[state]  ? vis.tallyStatusByState[state] : 0
                     let color = vis.colors(tally);
 
                     d3.select(this)
@@ -255,17 +274,20 @@ class MapVis {
                     //console.log("region/state not in data: ", d.properties.name)
                 }
             });
-
+            // tooltip with data on the state and top banned book
             d3.selectAll(".state").on('mouseover', function(event, d) {
 
                 let state = d.properties.name
-                let stateData = vis.topBooksByState[state] != undefined ? vis.topBooksByState[state] : {
-                    title: "NA",
-                    authors: "NA",
-                    reason_banned: "NA",
-                    totalRatings: "NA"
-                }
-                vis.tooltip.html(`
+                // let stateData = vis.topBooksByState[state] != undefined ? vis.topBooksByState[state] : {
+                //     title: "NA",
+                //     authors: "NA",
+                //     reason_banned: "NA",
+                //     totalRatings: "NA"
+                // }
+                if(vis.topBooksByState[state] != undefined && vis.gameStatus === "detailed map")
+                {
+                    let stateData =  vis.topBooksByState[state]
+                    vis.tooltip.html(`
                             <h3>${state}'s Top Banned Book</h3>
                             Title: ${stateData.title} <br><br>
                             Authors: ${stateData.authors} <br><br>
@@ -273,14 +295,16 @@ class MapVis {
                             Total Ratings: ${stateData.totalRatings} <br><br>
                         `);
 
-                // Get the bounding rectangle of the hovered element. referenced GPT
-                let { x, y } = this.getBoundingClientRect();
-                let positionFactor = -180
+                    // Get the bounding rectangle of the hovered element. referenced GPT
+                    let { x, y } = this.getBoundingClientRect();
+                    let positionFactor = -180
 
 
-                vis.tooltip.style("opacity", 1)
-                    .style("top", `${y}px`)//.attr("transform", "translate(" +x + "," + y + ")")
-                    .style("left", `${x <= 150 ? x : x + positionFactor}px`)
+                    vis.tooltip.style("opacity", 1)
+                        .style("top", `${y}px`)//.attr("transform", "translate(" +x + "," + y + ")")
+                        .style("left", `${x <= 150 ? x : x + positionFactor}px`)
+
+                }
 
             })
         }

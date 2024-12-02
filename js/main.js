@@ -90,7 +90,7 @@ function initPage(data) {
     myDataTable = new DataTable('tableDiv', data[3]);
     myBrushVis = new BrushVis('brushDiv', data[3]);
     // mapVis
-    myMapVis = new MapVis('mapDiv', geoStates, mergedBooks);
+    myMapVis = new MapVis('mapSvg', geoStates, mergedBooks);
 
     // Bubbles sortable by tag
     tagBubbles = new tagVis("tagbubbles-area", book_characteristics);
@@ -117,8 +117,18 @@ function tagChecked() {
 
 function playGuessingGame()
 {
-    myMapVis.playingGame = true;
+    myMapVis.gameStatus = "playing";
     myMapVis.updateVis();
+}
 
+function stopGuessingGame()
+{
+    myMapVis.gameStatus = "revealing answers";
+    myMapVis.updateVis();
+}
 
+function viewDetailedMap()
+{
+    myMapVis.gameStatus = "detailed map";
+    myMapVis.updateVis();
 }

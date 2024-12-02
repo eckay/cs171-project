@@ -5,15 +5,33 @@
 /*    !*  pointer-events: none;	This line needs to be removed *!*/
 /*}*/
 #mapDiv {
-    height: 90%;
-    width:90%;
     margin-top:20px;
     margin-bottom:200px;
 }
-.custom-select.map {
-    width: 22%;
+
+#mapSvg {
+    height: 1500px;
+    width: 2000px;
+    justify-content: center;
+}
+button {
     border-radius: 5px;
-    margin: 20px;
+    margin-bottom: 10px;
+}
+#guessing-game-button {
+    width: 7%;
+}
+
+#answer-reveal-button {
+    width: 10%;
+}
+#us-map {
+    align-items: center;
+  }
+.custom-select.map {
+    width: 20%;
+    border-radius: 5px;
+    /*margin: 20px;*/
     border-color: lightblue;
 
 }

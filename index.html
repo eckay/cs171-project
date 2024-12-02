@@ -30,15 +30,7 @@
             </div>
             
         </div>
-        <div class="section container-fluid" id="mapDiv">
-            <select id='mapCategorySelector' class="custom-select map align-self-center" onchange="mapCategoryChange()">
-                <option value="all ban types" selected>All Ban Types</option>
-                <option value="banned">Banned</option>
-                <option value="banned pending investigation">Banned pending investigation</option>
-                <option value="banned by restriction">Banned by restriction</option>
-            </select>
-<!--            <button id="guessing-game-button" value="false" onClick="playGuessingGame()">Play Guessing Game</button>-->
-        </div>
+
         <div class="section container-fluid">
             <div class="row justify-content-center">
                 <div class="col-10 content-box" id="">
@@ -114,6 +106,27 @@
                 </div>
             </div>
         </div>
+
+        <div class="section container-fluid" id="mapDiv">
+            <div id="map-selection-menu">
+                <h2>Which States are Banning Books?</h2>
+                <p>Select a category of banned books to guess for, then click 'guess' and start clicking on states you believe fit the selected category. When you want to reveal all the correct answers, select the 'reveal' button. Select 'View Detailed Map' more information on each state and how many books they ban for each category. </p>
+                <button id="guessing-game-button" value="false" onClick="playGuessingGame()">Guess</button>
+                <button id="answer-reveal-button" value="false" onClick="stopGuessingGame()">Reveal Answers</button>
+                <button id="detailed-map-button" value="false" onClick="viewDetailedMap()">View Detailed Map</button>
+                <br>
+                <select id='mapCategorySelector' class="custom-select map align-self-center" onchange="mapCategoryChange()">
+                    <option value="all ban types" selected>All Ban Types</option>
+                    <option value="banned">Banned</option>
+                    <option value="banned pending investigation">Banned pending investigation</option>
+                    <option value="banned by restriction">Banned by restriction</option>
+                </select>
+            </div>
+            <div id="mapSvg">
+            </div>
+
+
+        </div>
         <div class="section container-fluid">
             <div class="row justify-content-center">
                 <div class="col-10 content-box" id="boxplot-area">
@@ -129,6 +142,7 @@
                 </div>
             </div>
         </div>
+
 
     </div>
 
