@@ -45,7 +45,7 @@ class tagVis {
             "explores-race"
         ]
 
-        vis.circleRadius = vis.width / 2 / 22;
+        vis.circleRadius = vis.width / 2 / 30;
 
         // Force layout
         vis.simulation = d3.forceSimulation()

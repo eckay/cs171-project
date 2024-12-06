@@ -13,21 +13,182 @@
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <!-- fullpage.js -->
     <link rel="stylesheet" type="text/css" href="css/fullpage.css" />    
+
     <link rel="stylesheet" type="text/css" href="css/map_styles.css" />
     <link rel="stylesheet" type="text/css" href="css/styles.css" />  
+    <!-- <link rel="stylesheet" type="text/css" href="css/tester_styles.css" />  -->
+
 
 </head>
 <body>
 
     <div id="fullpage">
+
+
+        <div class="section container-fluid" style="height: 100vh;">
+            <div class="row justify-content-center headline">
+                <div class="col d-flex justify-content-center">
+                    <img class="headline-img" id="hl1" src="img/hl1.png"/>
+                </div>
+            </div>
+            <div class="row justify-content-center headline">
+                <div class="col d-flex justify-content-center">
+                    <img class="headline-img" id="hl2" src="img/hl2.png"/>
+                </div>
+            </div>
+            <div class="row justify-content-center headline">
+                <div class="col d-flex justify-content-center">
+                    <img class="headline-img" id="hl3" src="img/hl3.png"/>
+                </div>
+            </div>
+            <div class="row justify-content-center headline">
+                <div class="col d-flex justify-content-center">
+                    <img class="headline-img" id="hl4" src="img/hl4.png"/>
+                </div>
+            </div>
+            <div class="row justify-content-center headline">
+                <div class="col d-flex justify-content-center">
+                    <img class="headline-img" id="hl5" src="img/hl5.png"/>
+                </div>
+            </div>
+            <div class="row justify-content-center headline">
+                <div class="col d-flex justify-content-center">
+                    <h1 id="story-title">Books Bans in US Schools</h3>
+                </div>
+            </div>
+        </div>
+
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <p id="scatterTitle" style="text-align: center">Are the most frequently banned books popular or well-rated?</p>
-                <div class="col-10 content-box1" id="scatter-area">
+                <div class="col-8 text-center" id="compareCircles-intro">
+                    <p>
+                        There's no two ways about it: book bans in schools are on the rise.
+                    </p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-5" id="compareCircles">
+                </div>
+                <div class="col-5" id="compareCircles-text">
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-8 text-center" id="compareCircles-conclusion">
+                </div>
+            </div>
+        </div>
+
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col text-center" style="height: 20vh;"">
+                    <h6> 
+                        Test your intuition! Which states had school districts that banned books last school year? 
+                    </h6>
+                    <p>Click 'guess' and start clicking on states. When you want to reveal all the correct answers, select the 'reveal' button.</p>
+                    <button id="guessing-game-button" value="false" onClick="playGuessingGame()">Guess</button>
+                    <button id="answer-reveal-button" value="false" onClick="stopGuessingGame()">Reveal Answers</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col" id="guessingGame" style="height: 75vh; width:100%; margin-top:20px; margin-bottom:0px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="section container-fluid">
+            <div class="row">
+                <div class="col" style="height: 20vh">
+                    <h6>
+                        So it's not the case that a few books are broadly banned by most states. Let's take a closer 
+                        look.
+                    </h6>
+                    <p>
+                        Click a state to see how its number of bans has changed over the past three years.
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-7" style="height: 70vh">
+                    <div class="row"> 
+                        <select id='mapCategorySelector' class="custom-select align-self-center" style="width: 40%; margin-left:20px" onchange="mapCategoryChange()">
+                            <option value="all ban types" selected>All Ban Types</option>
+                            <option value="banned">Banned</option>
+                            <option value="banned pending investigation">Banned pending investigation</option>
+                            <option value="banned by restriction">Banned by restriction</option>
+                        </select>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col" id="mapDiv" style="height: 60vh; width:100%; margin-top:10px; margin-bottom:20px;">
+                        </div>
+                    </div>
+                            
+                </div>
+                <div class="col">
+                    
+
+                    <div class="row">
+                        <div class="col-5" id="map-bar" style="height: 50vh; width:80%;">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>      
+        </div>
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col text-center">
+                    <p>What's going on in Iowa? A law regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>, 
+                    was passed in May 2023. See <a href="https://www.nytimes.com/2023/09/01/opinion/book-ban-schools-iowa.html">teacher's op-ed</a>.
+                    [map of iowa by school district if we have time?] [maybe also a closer look at florida?]
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col text-center">
+                    <h6> OK, so we’ve looked at where. What are the books being banned like? What objectionable contents do they contain?
+                    </h6>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-10">
+                    <p id="scatterTitle" style="text-align: center">Are the most frequently banned books popular or well-rated?</p>
+                    <p style="font-size: 11px">What are the books being banned in schools for the 2023-24 academic year
+                        actually like? How do their ratings compare to 50 of the highest rated and 50 of the most rated
+                        books on Goodreads (a site for social cataloging of books)?
+                    </p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-10 content-box1 d-flex justify-content-center" id="scatter-area">
+                </div>
+                <div class="col">
+                    <div class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check scatter-buttons" name="btnradio" id="scatter-ratings" value="scatter-ratings" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="scatter-ratings">Ratings</label>
+                      
+                        <input type="radio" class="btn-check scatter-buttons" name="btnradio" id="scatter-year" value="scatter-year" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="scatter-year">Publication year</label>
+                      
+                        <input type="radio" class="btn-check scatter-buttons" name="btnradio" id="scatter-banned" value="scatter-banned" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="scatter-banned"># of bans</label>
+                      </div>
                 </div>
             </div>
             
+            
         </div>
+
+
+
         <div class="section container-fluid">
             <div class="row justify-content-center">
                 <div class="col-10 content-box" id="">
@@ -39,19 +200,40 @@
                     <div class="row">
                         <div class="col" id="brushDiv" style="height: 100%; width:100%;"></div>
                     </div>
-                    
+
                 </div>
             </div>
         </div>
 
-        <div class="section container-fluid" id="mapDiv" style="height: 100%; width:100%; margin-top:20px; margin-bottom:200px;">
-            <select id='mapCategorySelector' class="custom-select align-self-center" style="width: 20%" onchange="mapCategoryChange()">
-                <option value="all ban types" selected>All Ban Types</option>
-                <option value="banned">Banned</option>
-                <option value="banned pending investigation">Banned pending investigation</option>
-                <option value="banned by restriction">Banned by restriction</option>
-            </select>
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <h3>Frequency of most common words in complaints leading to bans</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-11 content-box" id="barvis-area">
+                </div>
+            </div>
         </div>
+
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-10 content-box" id="boxplot-area">
+                </div>
+            </div>
+        </div>
+
+        <div class="section container-fluid">
+            <div class="row justify-content-center">
+                <div class="col text-center">
+                    <p> [Talk about websites that basically exist to facilitate challenges (ex: BookLook). It can be hard to actually get the contents of books without reading them 
+                        (talk abt that Iowa librarian who used chatGPT?) so we’ve used Goodreads shelves (tags) to categorize books in the next visualization]
+                    </p>
+                </div>
+            </div>
+        </div>
+
 
         <div class="section container-fluid">
             <div class="row justify-content-center">
@@ -61,12 +243,7 @@
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-10 content-box1" id="tagbubbles-area">
-                    
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
+                <div class="col-3" style="padding-left: 4vw;">
                     <div>
                         <input type="checkbox" class="tags" id="tag1" value="sexually-explicit" onclick="tagChecked()">
                         <label for="tag1">Sexually explicit</label>
@@ -111,21 +288,26 @@
                     </div>
                 </div>
             </div>
+            <div class="row justify-content-center">
+                <div class="col-10 content-box1" id="tagbubbles-area">
+                    
+                </div>
+            </div>
+            
         </div>
+
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <div class="col-10 content-box" id="boxplot-area">
-                    <img src="images/boxplots-img.png" width="500"> 
+                <div class="col-8 text-center">
+                    <p>Over the last couple years, there's been lots of press about book challenges and bans in the US. 
+                    We were curious what that landscape actually looks like—what books are being banned and why? Where are these bans happening?
+                    For our exploration, we've primarily used data from school districts rather than public libraries because it's more readily available. For
+                    information on the books themselves, we've used data from Goodreads.
+                    </p>
                 </div>
             </div>
         </div>
-        <div class="section container-fluid">
-            <div class="row justify-content-center">
-                <div class="col-11 content-box" id="map-area">
-                    <img src="images/map-img.png" height="500"> 
-                </div>
-            </div>
-        </div>
+
     </div>
 
 
@@ -144,18 +326,26 @@
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 
+
     <!-- fullpage.js-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.15/fullpage.min.js"></script>
 
     <!-- Load data, create visualizations -->
     <script src="js/ek_js/scattervis.js"></script>
     <script src="js/ek_js/tagVis.js"></script>
+    <script src="js/ek_js/mapBar.js"></script>
+    <script src="js/ek_js/compareCircles.js"></script>
     <script src="js/main.js"></script>
+
+        <script src="js/boxplot.js"></script>
+        <script src="js/barchart.js"></script>
+
 
     <script src="js/table-js/brushVis.js"></script>
     <script src="js/table-js/dataTable.js"></script>
     <script src="js/table-js/helpers.js"></script>
     <script src="js/map/mapVis.js"></script>
+    <script src="js/map/mapGuess.js"></script>
     
 
 

@@ -10,11 +10,17 @@ class scatterChart {
 
     initVis() {
 		let vis = this; 
-		
-        vis.margin = {top: 40, right: 60, bottom: 40, left: 40};
 
-		vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width * 0.8 - vis.margin.left - vis.margin.right;
-		vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+		vis.parentWidth = document.getElementById(vis.parentElement).getBoundingClientRect().width;
+		vis.parentHeight = document.getElementById(vis.parentElement).getBoundingClientRect().height;
+		
+        vis.margin = {top: 10, right: vis.parentWidth * 0.15, bottom: 50, left: 40};
+
+		vis.width = vis.parentWidth * 0.8 - vis.margin.left - vis.margin.right;
+		vis.height = vis.parentHeight - vis.margin.top - vis.margin.bottom;
+
+		// Crucial unit of measurement
+		vis.circleRadius = 0.006 * vis.width;
 
 		// SVG drawing area
 		vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -29,29 +35,13 @@ class scatterChart {
         vis.yScale = d3.scaleLinear()
             .range([vis.height, 0]);
 
-		//Timelines scale?
+		//Timelines scale
 		vis.xTimeScale = d3.scaleLinear()
 			.range([0, vis.width]);
-		
-		// Horrible temporary rectangle
-		vis.timelineTrigger = vis.svg.append("rect")
-			.attr("x", -40)
-			.attr("y", 0)
-			.attr("height", 10)	
-			.attr("width", 10)
-			.attr("fill", "black");
-			
-          
-        this.restoreElems();
-    }
 
-	restoreElems() {
-		let vis = this;
-
-		// Tooltip
-        vis.tooltip = d3.select("body").append('div')
-            .attr("class", "tooltip")
-			.attr("id", "tooltip")
+		// Bans scale
+		vis.xBanScale = d3.scaleLinear()
+			.range([0, vis.width]);
 
 		// Generate axes 
         vis.yAxisG = vis.svg.append("g")
@@ -60,8 +50,39 @@ class scatterChart {
             .attr("class", "axis x-axis")
             .attr("transform", `translate(0, ${vis.height})`);
 
-		vis.wrangleData();
-	}
+		// Legend
+		vis.legend = vis.svg.append("g")
+			.attr("class", "scatter-legend")
+			.attr("transform", `translate(${vis.width + vis.margin.right / 3.5}, 0)`)
+		
+		vis.legend
+			.append("circle")
+			.attr("cx", 0)
+			.attr("cy", 0)
+			.attr("r", vis.circleRadius)
+			.attr("fill", "blue")
+		vis.legend
+			.append("circle")
+			.attr("cx", 0)
+			.attr("cy", vis.circleRadius * 10)
+			.attr("r", vis.circleRadius)
+			.attr("fill", "lightgrey")
+		vis.legend
+			.append("text")
+			.text("banned book")
+			.attr("x", vis.circleRadius * 2)
+			.attr("y", vis.circleRadius * 1)
+			.attr("font-size", vis.circleRadius * 4)
+		vis.legend
+			.append("text")
+			.text("popular book")	
+			.attr("x", vis.circleRadius * 2)
+			.attr("y", vis.circleRadius * 11)
+			.attr("font-size", vis.circleRadius * 4)
+          
+        this.wrangleData();
+    }
+
 
 	wrangleData() {
 		let vis = this;
@@ -88,60 +109,87 @@ class scatterChart {
 			vis.popularBooks.push(book);
 		});
 		// Most rated
-		vis.popularData.sort((a, b) => b.ratings_count - a.ratings_count).slice(0, 100).forEach(book => {
+		vis.popularData.sort((a, b) => b.ratings_count - a.ratings_count).slice(0, 103).forEach(book => {
 			book.selected = false;
 			vis.popularBooks.push(book);
 		});
 
-		//Timeline scale
-		// Need to fix the guys with year = 0 for whatever reason
+		// Get rid of overlap between highest rate and most rated
+		let noDuplicateBooks = new Set(vis.popularBooks);
+		vis.popularBooks = [...noDuplicateBooks];
+
+		// Timeline scale
 		vis.xTimeScale.domain([1965, d3.max(vis.displayData, (d) => d.publication_year)])
-		console.log(vis.xTimeScale(1945))
-		console.log(vis.xTimeScale(2014))
-
+		// Ban scale
+		vis.xBanScale.domain([d3.min(vis.displayData, (d) => d.bans) - 1, d3.max(vis.displayData, (d) => d.bans)])
 		
-		console.log(vis.bannedData);
-		
-		vis.updateVis();
-	}
-
-	updateVis() {
-		let vis = this;
-
-		vis.timelineTrigger
-			.on("click", function(){
-				d3.select(this).on("click", null);
-				vis.timelineSort();
-			});
-
-		// Crucial unit of measurement
-		vis.circleRadius = 5;
-
-		// Update scales
+		// Update other scales
         vis.yScale.domain([2.7, 5]);
         vis.xScale.domain([d3.min(vis.displayData, (d) => d.ratings_count) - (d3.min(vis.displayData, (d) => d.ratings_count) / 2), d3.max(vis.popularBooks, (d) => d.ratings_count)]);
 
-		console.log(d3.min(vis.displayData, (d) => d.ratings_count))
-		console.log(vis.xScale(10))
+		
+		
+		/*
+		vis.selectedButton = [...document.querySelectorAll('.scatter-buttons:checked')].map((d) => d.value)[0];
+		if (vis.selectedButton === "scatter-ratings") {
+			vis.updateVis();
+		}
+		else if (vis.selectedButton === "scatter-year") {
+			vis.timelineView();
+		}
+		*/
 
-		// Axes
-        vis.xAxis = d3.axisBottom()
-            .scale(vis.xScale);
-        vis.yAxis = d3.axisLeft()
-            .scale(vis.yScale);
-		vis.xAxisG
-			.style("opacity", 1)
-            .call(vis.xAxis);
-        vis.yAxisG
-			.call(vis.yAxis)
-			.transition()
-			.duration(300)
-			.style("opacity", 1);
+		vis.restoreElems();
+		
+	}
+
+	restoreElems() {
+		let vis = this;
+
+		// Tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .attr("class", "tooltip")
+			.attr("id", "tooltip")
+
+		// Axis labels
+		vis.xLabel = vis.svg.append("text")
+			.attr("transform", `translate(${vis.width / 2}, ${vis.height + vis.circleRadius * 11})`)
+			.attr("text-anchor", "middle")
+			.attr("font-size", vis.circleRadius * 4)
+
+		vis.yLabel = vis.svg.append("text")
+			.attr("text-anchor", "middle")
+			.attr("x", -vis.circleRadius * 13)
+			.attr("y", vis.height / 2)
+			.attr("transform", `rotate(-90, ${-vis.circleRadius * 13}, ${vis.height / 2})`)
+			.attr("font-size", vis.circleRadius * 4)
+			.text("Rating (out of 5)")
+
+		d3.selectAll(".scatter-buttons")
+			.on("click", function(){
+				vis.selectedButton = [...document.querySelectorAll('.scatter-buttons:checked')].map((d) => d.value)[0];
+				console.log(vis.selectedButton)
+				if (vis.selectedButton === "scatter-year") {
+					vis.timelineView();
+				}
+				else if (vis.selectedButton === "scatter-ratings") {
+					
+					vis.ratingsView();
+				}
+				else if (vis.selectedButton === "scatter-banned") {
+					
+					vis.bansView();
+				}
+				
+			});
+
+		/////// Make circles ///////
+		vis.selectedButton = [...document.querySelectorAll('.scatter-buttons:checked')].map((d) => d.value)[0];
 
 		vis.popularCircles = vis.svg.selectAll("circle.popular")
-            .data(vis.popularBooks, (d) => d.title);
+			.data(vis.popularBooks, (d) => d.bookID);
 
-		// for some reason enter selection is not empty after infobox and return--check out
+		// Grey background circles <- just 0 opacity during timeline sort, never move
 		vis.popularCircles.enter()
 			.append("circle")
 			.style("opacity", 1)
@@ -156,36 +204,61 @@ class scatterChart {
 			.style("opacity", 1);
 
 		vis.bannedCircles = vis.svg.selectAll("circle.banned")
-            .data(vis.displayData, (d) => d.book_id);
+			.data(vis.displayData, (d) => d.book_id);
 
 		vis.bannedCircles.enter()
 			.append("circle")
-			.attr("cx", (d) => vis.xScale(d.ratings_count))
-			.attr("cy", (d) => vis.yScale(d.average_rating))
+			.attr("cx", (d) => {
+				if (vis.selectedButton === "scatter-ratings") {
+					return vis.xScale(d.ratings_count);
+				}
+				else if (vis.selectedButton === "scatter-year") {
+					return vis.xTimeScale(d.publication_year);
+				}
+				else if (vis.selectedButton === "scatter-banned") {
+					return vis.xBanScale(d.bans);
+				}
+				
+			})
+			.attr("cy", (d) => {
+				if (vis.selectedButton === "scatter-ratings") {
+					return vis.yScale(d.average_rating);
+				}
+				else if(vis.selectedButton === "scatter-year") {
+					let yearIndex =  d3.group(vis.bannedData, row => row.publication_year).get(d.publication_year).indexOf(d);
+					return vis.height - (yearIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+				}
+				else if (vis.selectedButton === "scatter-banned") {
+					let bansIndex =  d3.group(vis.bannedData, row => row.bans).get(d.bans).indexOf(d);
+					return vis.height - (bansIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+				}
+			})
 			.attr("r", vis.circleRadius)
 			.attr("fill", "darkblue")
 			.style("opacity", 1)
 			.attr("class", "banned")
+			// merge with returning circle that was red x button
 			.merge(vis.bannedCircles)
 			.attr("r", vis.circleRadius)
 			.attr("fill", "darkblue")
 			.style("opacity", 1)
 			.attr("class", "banned")
+			.attr('stroke-width', '0px')
 			// Tooltip listeners
-            .on('mouseover', function(event, d){
-                d3.select(this)
-                    .attr('stroke-width', '2px')
-                    .attr('stroke', 'black')
-                    .attr('fill', 'rgb(0,255,0)')
+			.on('mouseover', function(event, d){
+				d3.select(this)
+					.attr('stroke-width', '2px')
+					.attr('stroke', 'black')
+					.attr('fill', 'rgb(0,255,0)')
 
-                vis.tooltip
-                    .style("opacity", 1)
-                    .html(`
-                        <div style="border: thin solid grey; border-radius: 5px; background: white; padding: 20px">
-                            <h3>${d.title}</h3>
+				vis.tooltip
+					.style("opacity", 1)
+					.html(`
+						<div style="border: thin solid grey; border-radius: 5px; background: white; padding: 20px">
+							<h3>${d.title}</h3>
 							<img src=${d.image_url} alt="Cover of ${d.title}" height="150">
 							<p><i>click for more info</i></p>             
-                        </div>`); 
+						</div>`); 
 
 				let tooltipHeight = document.getElementById("tooltip").getBoundingClientRect().height;
 				let parentSize = document.getElementById(vis.parentElement).getBoundingClientRect();
@@ -198,23 +271,23 @@ class scatterChart {
 						return event.pageY + tooltipHeight > parentSize.y + parentSize.height ?  event.pageY - tooltipHeight + "px" : event.pageY + "px";
 					})
 				//console.log("bounded", document.getElementById("tooltip").getBoundingClientRect())
-            })
-            .on('mouseout', function(event, d){
-                d3.select(this)
-                    .attr('stroke-width', '0px')
-                    .attr("fill", "darkblue")
+			})
+			.on('mouseout', function(event, d){
+				d3.select(this)
+					.attr('stroke-width', '0px')
+					.attr("fill", "darkblue")
 
-                vis.tooltip
-                    .style("opacity", 0)
-                    .style("left", 0)
-                    .style("top", 0)
-                    .html(``);
-            })
+				vis.tooltip
+					.style("opacity", 0)
+					.style("left", 0)
+					.style("top", 0)
+					.html(``);
+			})
 			.on('click', function(event, d){
 				d.selected = true;
 
 				vis.tooltip
-                    .remove();
+					.remove();
 
 				d3.select(this)
 					.attr("class", "selected");
@@ -223,7 +296,6 @@ class scatterChart {
 				d3.select(this).on('click',null);
 				d3.select(this).on('mouseover',null);
 				d3.select(this).on('mouseout',null);
-				vis.timelineTrigger.on('click',null);
 
 				d3.selectAll("circle.banned")
 					.transition()
@@ -238,11 +310,16 @@ class scatterChart {
 					.transition()
 					.duration(300)
 					.style("opacity", 0)
-					.remove()
+					//.remove()
 				d3.select(".y-axis")
 					.transition()
 					.duration(300)
 					.style("opacity", 0)
+					//.remove()
+
+				vis.xLabel
+					.remove()
+				vis.yLabel
 					.remove()
 
 				// Move him to upper left
@@ -252,14 +329,152 @@ class scatterChart {
 					.on("end", function(d){
 						vis.focusVis(d, this)
 					})
-					.attr("cx", vis.width / 14)
-					.attr("cy", vis.height / 14);
-            })
+					.attr("cx", vis.width / 16)
+					.attr("cy", vis.height / 16);
+			})
+		
+
+		if (vis.selectedButton === "scatter-year") {
+			vis.timelineView();
+		}
+		else if (vis.selectedButton === "scatter-ratings") {
+			vis.ratingsView();
+		}
+		else if (vis.selectedButton === "scatter-banned") {
+			vis.bansView();
+		}
+
+		
+	}
+
+	
+	ratingsView() {
+		let vis = this;
+
+		d3.select("#scatterTitle")
+			.text("Are the most frequently banned books popular or well-rated?");
+
+
+		// Axes
+        vis.xAxis = d3.axisBottom()
+            .scale(vis.xScale);
+        vis.yAxis = d3.axisLeft()
+            .scale(vis.yScale);
+		vis.xAxisG
+			.style("opacity", 1)
+            .call(vis.xAxis);
+        vis.yAxisG
+			.call(vis.yAxis)
+			.transition()
+			.duration(400)
+			.style("opacity", 1);
+
+		vis.xLabel
+			.text("# of Ratings")
+		vis.yLabel
+			.attr("opacity", 1)
+
+		// Show the grey circles
+		vis.svg.selectAll("circle.popular")
+			.transition()
+			.duration(400)
+			.style("opacity", 1);
+
+		vis.svg.selectAll("circle.banned")
 			.transition()
 			.duration(400)
 			.attr("cx", (d) => vis.xScale(d.ratings_count))
 			.attr("cy", (d) => vis.yScale(d.average_rating))
 		
+	}
+
+	timelineView(){
+		let vis = this;
+
+		d3.select("#scatterTitle")
+			.text("When were the most frequently banned books of 2023-24 published?")
+
+		vis.yAxisG
+			.transition()
+			.duration(300)
+			.style("opacity", 0);
+
+		vis.xAxis
+			.scale(vis.xTimeScale)
+			.tickFormat(d3.format("d"));
+
+		d3.select(".x-axis")
+			.transition(300)
+			.style("opacity", 1)
+			.call(vis.xAxis);
+		
+		vis.xLabel
+			.text("Year")
+		vis.yLabel
+			.transition()
+			.duration(300)
+			.attr("opacity", 0)
+
+		d3.selectAll("circle.popular")
+			.transition()
+			.duration(300)
+			.style("opacity", 0);
+
+		d3.selectAll("circle.banned")
+			.transition()
+			.duration(600)
+			.attr("cx", (d) => {
+				return vis.xTimeScale(d.publication_year);
+			})
+			.attr("cy", (d) => {
+				//console.log(d3.group(vis.bannedData, row => row.publication_year))
+				let yearIndex =  d3.group(vis.bannedData, row => row.publication_year).get(d.publication_year).indexOf(d);
+				return vis.height - (yearIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+			})
+	}
+
+	bansView(){
+		let vis = this;
+
+		d3.select("#scatterTitle")
+			.text("How many school districts banned each book?")
+
+		vis.yAxisG
+			.transition()
+			.duration(300)
+			.style("opacity", 0);
+
+		vis.xAxis
+			.scale(vis.xBanScale);
+
+		d3.select(".x-axis")
+			.transition()
+			.style("opacity", 1)
+			.call(vis.xAxis);
+
+		vis.xLabel
+			.text("# of Banning Districts")
+		vis.yLabel
+			.transition()
+			.duration(300)
+			.attr("opacity", 0)
+
+		d3.selectAll("circle.popular")
+			.transition()
+			.duration(300)
+			.style("opacity", 0);
+
+		d3.selectAll("circle.banned")
+			.transition()
+			.duration(600)
+			.attr("cx", (d) => {
+				return vis.xBanScale(d.bans);
+			})
+			.attr("cy", (d) => {
+				//console.log(d3.group(vis.bannedData, row => row.publication_year))
+				let bansIndex =  d3.group(vis.bannedData, row => row.bans).get(d.bans).indexOf(d);
+				return vis.height - (bansIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+			})
 	}
 
 	focusVis(book, circle){
@@ -274,7 +489,7 @@ class scatterChart {
 			.attr("id", "infoRect")
 			.attr("x", 0)
 			.attr("y", 0)
-			.attr("width", vis.width - vis.margin.right)
+			.attr("width", vis.width)
 			.attr("height", vis.height * 0.7)
 			.attr("stroke", "black")
 			.attr("fill", "rgba(0, 0, 0, 0)")
@@ -308,90 +523,115 @@ class scatterChart {
 			.attr("y", coverImg.y)
 			//.attr("text-anchor", "end")
 			.text(`Average Goodreads rating: ${book.average_rating}`)
+		
+		d3.selectAll(".scatter-buttons")
+			.on('click', function() {
+				vis.removeFocusBox()
+			});
 
-		// Additional info
-		/*
-		let additionalInfo = d3.select("body").append('div')
-			.attr('id', "additionalInfo")
-			.attr("class", "tooltip")
-			.style("opacity", 1)
-			.style("left", (image_x + vis.width / 2) + "px")
-			.style("top", (image_y + (vis.height / 14 + vis.circleRadius * 2) + vis.margin.top) + "px")
-			//border: thin solid grey; border-radius: 5px; background: white; 
-			.html(`
-				<div style="padding: 20px">
-					<p>average rating: ${book.average_rating}</p>    
-					<p>#ratings: ${book.ratings_count}</p>
-					<p>etc etc would like reasons here</p>         
-				</div>`);   
-		*/
 		d3.select("circle.selected")
 			.attr("fill", "red")
+			.attr("r", vis.circleRadius * 3)
 			.on('click', function(event, d) {
 				
 				vis.infoBox
 					.remove();
 
+				d3.select("circle.selected")
+					.attr("r", vis.circleRadius);
+
 				/*additionalInfo
 					.remove();
 				*/
 
-				d3.select(this)
+				d3.select("circle.selected")
 					.attr("class", "banned")
 					.transition()
 					.duration(700)
-					.attr("cx", (d) => vis.xScale(d.ratings_count))
-					.attr("cy", (d) => vis.yScale(d.average_rating))
+					.attr("cx", (d) => {
+						if (vis.selectedButton === "scatter-ratings") {
+							console.log(vis.xScale(d.ratings_count))
+							return vis.xScale(d.ratings_count);
+						}
+						else if (vis.selectedButton === "scatter-year") {
+							return vis.xTimeScale(d.publication_year);
+						}
+						else if (vis.selectedButton === "scatter-banned") {
+							return vis.xBanScale(d.bans);
+						}
+						
+					})
+					.attr("cy", (d) => {
+						if (vis.selectedButton === "scatter-ratings") {
+							console.log(vis.yScale(d.average_rating))
+							return vis.yScale(d.average_rating);
+						}
+						else if(vis.selectedButton === "scatter-year") {
+							let yearIndex =  d3.group(vis.bannedData, row => row.publication_year).get(d.publication_year).indexOf(d);
+							return vis.height - (yearIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+						}
+						else if (vis.selectedButton === "scatter-banned") {
+							let bansIndex =  d3.group(vis.bannedData, row => row.bans).get(d.bans).indexOf(d);
+							return vis.height - (bansIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+						}
+					})
 					.on("end", function(){
 						vis.restoreElems();
 					})		
 			})
+			
 	}
 
-	timelineSort(){
+
+	removeFocusBox() {
 		let vis = this;
+		
+		vis.infoBox
+			.remove();
 
-		d3.select("#scatterTitle")
-			.text("When were the most frequently banned books of 2023-24 published?")
+		vis.selectedButton = [...document.querySelectorAll('.scatter-buttons:checked')].map((d) => d.value)[0];
 
-		vis.yAxisG
+		console.log(vis.selectedButton)
+
+		d3.select("circle.selected")
+			.attr("r", vis.circleRadius);
+
+		d3.select("circle.selected")
+			.attr("class", "banned")
 			.transition()
-			.duration(300)
-			.style("opacity", 0);
-
-		vis.xAxis
-			.scale(vis.xTimeScale)
-			.tickFormat(d3.format("d"));
-
-		d3.select(".x-axis")
-			.transition()
-			.call(vis.xAxis);
-
-		d3.selectAll("circle.popular")
-			.transition()
-			.duration(300)
-			.style("opacity", 0);
-
-		d3.selectAll("circle.banned")
-			.transition()
-			.duration(600)
+			.duration(700)
 			.attr("cx", (d) => {
-				return vis.xTimeScale(d.publication_year);
+				if (vis.selectedButton === "scatter-ratings") {
+					console.log(vis.xScale(d.ratings_count))
+					return vis.xScale(d.ratings_count);
+				}
+				else if (vis.selectedButton === "scatter-year") {
+					return vis.xTimeScale(d.publication_year);
+				}
+				else if (vis.selectedButton === "scatter-banned") {
+					return vis.xBanScale(d.bans);
+				}
+				
 			})
 			.attr("cy", (d) => {
-				console.log(d3.group(vis.bannedData, row => row.publication_year))
-				let yearIndex =  d3.group(vis.bannedData, row => row.publication_year).get(d.publication_year).indexOf(d);
-				return vis.height - (yearIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+				if (vis.selectedButton === "scatter-ratings") {
+					console.log(vis.yScale(d.average_rating))
+					return vis.yScale(d.average_rating);
+				}
+				else if(vis.selectedButton === "scatter-year") {
+					let yearIndex =  d3.group(vis.bannedData, row => row.publication_year).get(d.publication_year).indexOf(d);
+					return vis.height - (yearIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+				}
+				else if (vis.selectedButton === "scatter-banned") {
+					let bansIndex =  d3.group(vis.bannedData, row => row.bans).get(d.bans).indexOf(d);
+					return vis.height - (bansIndex * vis.circleRadius * 2.3) - vis.circleRadius * 1.5;
+				}
 			})
-	
-		
-		vis.timelineTrigger
-			.on("click", function(){
-				d3.select("#scatterTitle")
-					.text("Are the most frequently banned books popular or well-rated?")
+			.on("end", function(){
+				vis.restoreElems();
+			})	
 
-				vis.updateVis()
-			})
 	}
 	
 }
+

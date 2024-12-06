@@ -77,8 +77,6 @@ class DataTable {
             };
         });
 
-        console.log('Top banned books in selected time range:', vis.displayData);
-
         // Step 5: Update the table with the filtered top banned books
         vis.updateTable();
     }

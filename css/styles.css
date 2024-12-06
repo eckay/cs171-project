@@ -1,3 +1,8 @@
+.section {
+    height: 100vh;
+}
+
+
 #connections-area {
     height: 97vh;
     padding-bottom: 1vh;
@@ -15,5 +20,116 @@
 }
 
 .content-box1 {
-    height: 80vh;
+    height: 75vh;
+}
+
+.tags:checked + label{
+    color: red;
+}
+
+.tags {
+    accent-color: red;
+}
+
+/* Title slide */
+.headline-img {
+    max-width: 60%;
+}
+
+.headline {
+    padding-bottom: 1%;
+    padding-top: 0.5%;
+}
+
+#story-title {
+    padding-top: 0.5%;
+    color: rgb(16, 171, 169);
+    font-size: 8vh;
+    text-align: center;
+}
+
+#hl1{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 200ms;
+}
+
+#hl1.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl2{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 800ms;
+}
+
+#hl2.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl3{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 1400ms;
+}
+
+#hl3.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl4{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 2000ms;
+}
+
+#hl4.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl5{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 2600ms;
+}
+
+#hl5.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#story-title{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 3500ms;
+}
+
+#story-title.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+/* Intro Page */
+
+#compareCircles {
+    height: 60vh;
+}
+
+#compareCircles-intro {
+    height: 12vh;
+}
+
+#compareCircles-conclusion {
+    height: 12vh;
 }

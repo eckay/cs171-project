@@ -38,6 +38,9 @@ class BrushVis {
         vis.yAxis = vis.svg.append("g")
             .attr("class", "axis axis--y");
 
+        vis.barGroup = vis.svg.append("g")
+            .attr("class", "bars");
+
         vis.brushGroup = vis.svg.append("g")
             .attr("class", "brush");
 
@@ -113,7 +116,7 @@ class BrushVis {
         vis.xAxis.transition().duration(400).call(d3.axisBottom(vis.x));
         vis.yAxis.transition().duration(400).call(d3.axisLeft(vis.y).ticks(5));
 
-        vis.svg.selectAll("rect")
+        vis.barGroup.selectAll("rect")
             .data(vis.preProcessedData)
             .enter()
             .append("rect")
