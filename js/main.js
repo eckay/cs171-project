@@ -187,8 +187,10 @@ function mapCategoryChange() {
 function tagChecked() {
     // from https://stackoverflow.com/a/61598154
     const selectedboxes = [...document.querySelectorAll('.tags:checked')].map((d) => d.value);
+    const sizedByBans = document.querySelector('#tag-sizing:checked') !== null ? true : false;
+    console.log(sizedByBans)
     
-    tagBubbles.boxCheck(selectedboxes);
+    tagBubbles.boxCheck(selectedboxes, sizedByBans);
 }
 
 // Bans per state for '21-'22, '22-'23, and '23-'24

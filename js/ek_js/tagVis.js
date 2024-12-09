@@ -46,10 +46,11 @@ class tagVis {
         ]
 
         vis.circleRadius = vis.width / 2 / 30;
+        vis.maxBans = d3.max(vis.tagData, (d) => d.bans)
 
         // Force layout
         vis.simulation = d3.forceSimulation()
-            .force("collide", d3.forceCollide().radius(function(d){return vis.circleRadius;}).strength(0.4))
+            .force("collide", d3.forceCollide().radius(function(d){return vis.circleRadius}).strength(0.4))
             .velocityDecay(0.2)  
             //.force('charge', d3.forceManyBody().strength((d) => -Math.pow(10, 2.0) * 0.01))
             //.force("center", d3.forceCenter(vis.width / 2, vis.height / 2));
@@ -73,6 +74,11 @@ class tagVis {
             });
 
     
+        // Tooltip
+        vis.tooltip = d3.select("body").append('div')
+            .attr("class", "tooltip")
+			.attr("id", "tags-tooltip");
+
         vis.wrangleData();
     }
 
@@ -99,17 +105,66 @@ class tagVis {
             .attr("r", vis.circleRadius)
             .attr("cx", (d) => d.x)
             .attr("cy", (d) => d.y)
-            .attr("fill", (d) => d["profanity"] ? "red" : "grey")
+            .attr("fill", (d) => {
+                d.side = d["profanity"] ? "right" : "left";
+                return d["profanity"] ? "red" : "grey";
+            })
             // Could use string(first letter + hash) instead i guess. might be faster but idk if that's a concern really
             .attr("id", (d) => d.title.replaceAll(" ", "").replaceAll(":", "").replaceAll("'", ""))
+            // Tooltip listeners
+			.on('mouseover', function(event, d){
+				d3.select(this)
+					.attr("fill", "rgb(0,255,0)");
+
+				vis.tooltip
+					.style("opacity", 1)
+					.html(`
+						<div style="border: thin solid grey; border-radius: 5px; background: white; padding: 5px">
+							<h6>${d.title}</h6>
+							<p>
+                                Bans: ${d.bans}
+                            </p>           
+						</div>`); 
+
+				let tooltipHeight = document.getElementById("tags-tooltip").getBoundingClientRect().height;
+                let tooltipWidth = document.getElementById("tags-tooltip").getBoundingClientRect().width;
+				let parentSize = document.getElementById(vis.parentElement).getBoundingClientRect();
+                
+
+				vis.tooltip
+					.style("left", () => {
+						return d.side === "left" ? event.pageX + 20 + "px" : event.pageX - 20 - tooltipWidth + "px";
+					})
+					.style("top", () => {
+						return event.pageY + tooltipHeight > parentSize.y + parentSize.height ?  event.pageY - tooltipHeight + "px" : event.pageY + "px";
+					})
+				//console.log("bounded", document.getElementById("tooltip").getBoundingClientRect())
+			})
+			.on('mouseout', function(event, d){
+				d3.select(this)
+					.attr("fill", (d) => d.side === "right" ? "red" : "grey")
+
+				vis.tooltip
+					.style("opacity", 0)
+					.style("left", 0)
+					.style("top", 0)
+					.html(``);
+			})
     }
 
-    boxCheck(boxes) {
+    boxCheck(boxes, scaled) {
         let vis = this;
 
         console.log(boxes)
+        let scalingFactor = 1.5;
+
+        vis.bubbles
+            .attr("r", (d) => scaled ? scalingFactor * vis.circleRadius * Math.sqrt(d.bans / vis.maxBans) : vis.circleRadius)
 
         vis.simulation
+            .force("collide", d3.forceCollide().radius(function(d){
+                return scaled ? scalingFactor * vis.circleRadius * Math.sqrt(d.bans / vis.maxBans) : vis.circleRadius;
+                }).strength(0.4))
             .force("x", d3.forceX().strength(0.04).x((d) => {
                 let truthArray = [];
                 let title = d.title.replaceAll(" ", "").replaceAll(":", "").replaceAll("'", "");
@@ -119,6 +174,8 @@ class tagVis {
                 })
 
                 console.log(truthArray.length)
+
+                
 
                 if (truthArray.length != 0) {
                     if (truthArray.every(Boolean)) {

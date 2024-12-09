@@ -172,8 +172,9 @@
 
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <div class="col text-center">
-                    <h6> OK, so we’ve looked at where. What are the books being banned like? What objectionable contents do they contain?
+                <div class="col-8 text-center">
+                    <h6> OK, so we’ve looked at the quantity of bans in US schools and where they're happening. 
+                        What are the books banned in schools for the 2023-24 academic year like?
                     </h6>
                 </div>
             </div>
@@ -182,16 +183,17 @@
 
         <div class="section container-fluid">
             <div class="row justify-content-center">
-                <div class="col-10">
-                    <p id="scatterTitle" style="text-align: center">Are the most frequently banned books popular or well-rated?</p>
+                <div class="col-9">
+                    
                     <p style="font-size: 11px">What are the books being banned in schools for the 2023-24 academic year
-                        actually like? How do their ratings compare to 50 of the highest rated and 50 of the most rated
-                        books on Goodreads (a site for social cataloging of books)?
+                        actually like? How do their ratings compare to 50 of the highest rated (for books with more than 1000 ratings) 
+                        and 50 of the most rated books on Goodreads (a site for social cataloging of books)? 
                     </p>
+                    <p id="scatterTitle" style="text-align: center">Are the most frequently banned books popular or well-rated?</p>
                 </div>
             </div>
             <div class="row justify-content-center">
-                <div class="col-10 content-box1 d-flex justify-content-center" id="scatter-area">
+                <div class="col-9 content-box1 d-flex justify-content-center" id="scatter-area">
                 </div>
                 <div class="col">
                     <div class="btn-group-vertical" role="group" aria-label="Basic radio toggle button group">
@@ -293,6 +295,10 @@
                     <div>
                         <input type="checkbox" class="tags" id="tag6" value="explores-race" onclick="tagChecked()">
                         <label for="tag6">Race or racism</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" class="sizing-tag" id="tag-sizing" value="size-by-bans" onclick="tagChecked()">
+                        <label for="tag-sizing">Size by number of bans</label>
                     </div>
                 </div>
 
