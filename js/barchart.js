@@ -10,7 +10,7 @@ class BarVis {
         let vis = this; 
 
         // Step 3: Create the bar chart
-        vis.margin = { top: 20, right: 30, bottom: 50, left: 50 };
+        vis.margin = { top: 20, right: 30, bottom: 70, left: 50 };
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = 400 - vis.margin.top - vis.margin.bottom;
 
@@ -28,7 +28,7 @@ class BarVis {
 
         // Step 1: Extract and process the "Reason" column
         let reasons = vis.data.map(d => d.Reason).join(" "); // Combine all reasons into one string
-        let stopwords = new Set(["and", "the", "for", "was", "to", "it", "with", "of", "a", "in", "on", "that", "is", "be", "as"]); // Add more as needed
+        let stopwords = new Set(["and", "the", "for", "was", "to", "it", "with", "of", "a", "in", "on", "that", "is", "be", "as", "because", "challenged", "banned", "considered"]); // Add more as needed
 
         // Clean and split the words
         let words = reasons
@@ -36,6 +36,24 @@ class BarVis {
             .replace(/[.,!?;:()"]/g, "") // Remove punctuation
             .split(/\s+/) // Split by whitespace
             .filter(word => word && !stopwords.has(word)); // Remove stopwords and empty strings
+
+        words.forEach((word, i) => {
+                if (word === "sexually" && words[i + 1] === "explicit") {
+
+                    words[i] = "sexually explicit"
+                    words.splice(i + 1, 1);
+                }
+                else if (word === "lgbtqia+" && words[i + 1] === "content") {
+   
+                    words[i] = "lgbtqia+ content"
+                    words.splice(i + 1, 1);
+                }
+                else if (word === "age" && words[i + 1] === "group") {
+   
+                    words[i] = "age group"
+                    words.splice(i + 1, 1);
+                }
+            })
 
         // Count word occurrences
         let wordCounts = {};
