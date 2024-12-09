@@ -21,7 +21,7 @@ class mapGuess {
         let vis = this;
 
         //console.log(vis.geoData)
-        vis.margin = {top: 20, right: 20, bottom: 20, left: 20};
+        vis.margin = {top: 0, right: 20, bottom: 20, left: 20};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
         vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
@@ -33,8 +33,8 @@ class mapGuess {
             .attr('transform', `translate (${vis.margin.left}, ${vis.margin.top})`);
 
 
-        vis.viewpoint = {'width': 1100, 'height': 850};
-        vis.zoom = vis.width / vis.viewpoint.width;
+        vis.viewpoint = {'width': 975, 'height': 610};
+        vis.zoom = Math.min(vis.width / vis.viewpoint.width, vis.height / vis.viewpoint.height); //vis.width / vis.viewpoint.width;
 
         // code to center. referenced gpt
         const translateX = vis.width / 2 - (vis.width / 2 * vis.zoom);
@@ -236,13 +236,23 @@ class mapGuess {
             //append("div")
         }
         else if(vis.gameStatus === "revealing answers")
-        {
+        {   
+            let numberCorrect = 0;
+            let numberWrong = 0;
             d3.selectAll(".state-guessing").each(function(d)
             {
+                if (d3.select(this).style("fill") === "green") {
+                    numberCorrect++;
+                }
+                else if (d3.select(this).style("fill") === "red") {
+                    numberWrong++;
+                }
+                
                 let state = d.properties.name
                 let color = vis.topBooksByState[state] != undefined ? 'green' : 'red'
                 d3.select(this).style("fill", color)
             });
+            console.log(`you correctly selected ${numberCorrect} and incorrectly selected ${numberWrong}`)
         }
         else
         {

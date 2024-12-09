@@ -74,7 +74,7 @@ class compareCircles {
 
         d3.select("#compareCircles-text")
             .append("p")
-            .text(`In 2015, the American Library Association reported ${vis.bans_2015} challenges to books in US schools.
+            .html(`In 2015, the American Library Association reported <span style="color: red;">${vis.bans_2015}</span> challenges to books in US schools.
                 A challenge isn't a ban—it's just an attempt to remove a book and doesn't necessarily succeed.`)
             .style("opacity", 0)
             .transition()
@@ -129,8 +129,8 @@ class compareCircles {
         d3.select("#compareCircles-text")
             .append("p")
             .style("opacity", 0)
-            .text(`During the 2021-22 academic year, PEN America recorded
-                ${vis.bans_2021} instances of books being banned by school districts.`)
+            .html(`During the 2021-22 academic year, PEN America recorded
+                <span style="color: teal;">${vis.bans_2021}</span> instances of books being banned by school districts.`)
             .transition()
             .duration(transition3)
             .style("opacity", 1)
@@ -157,8 +157,8 @@ class compareCircles {
         d3.select("#compareCircles-text")
             .append("p")
             .style("opacity", 0)
-            .text(`During the 2022-23 academic year, they recorded
-                ${vis.bans_2022}.`)
+            .html(`During the 2022-23 academic year, they recorded
+            <span style="color: purple;">${vis.bans_2022}</span>.`)
             .transition()
             .duration(transition4)
             .style("opacity", 1)
@@ -185,7 +185,7 @@ class compareCircles {
         d3.select("#compareCircles-text")
             .append("p")
             .style("opacity", 0)
-            .text(`Last year, 2023-24, they counted ${vis.bans_2023} bans.`)
+            .html(`Last year, 2023-24, they counted <span style="color: green;">${vis.bans_2023}</span> bans.`)
             .transition()
             .duration(transition5)
             .style("opacity", 1)

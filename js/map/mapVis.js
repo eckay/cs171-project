@@ -41,7 +41,7 @@ class MapVis {
 
 
         vis.viewpoint = {'width': 975, 'height': 610};
-        vis.zoom = vis.height / vis.viewpoint.height;
+        vis.zoom = vis.zoom = Math.min(vis.width / vis.viewpoint.width, vis.height / vis.viewpoint.height);//vis.height / vis.viewpoint.height;
 
         // code to center. referenced gpt
         const translateX = vis.width / 2 * (1 - vis.zoom);
@@ -300,12 +300,17 @@ class MapVis {
 
             // Get the bounding rectangle of the hovered element. referenced GPT
             let { x, y } = this.getBoundingClientRect();
-            let positionFactor = -180
+            //let positionFactor = -180
+            let positionFactor = 20;
 
 
             vis.tooltip.style("opacity", 1)
                 .style("top", `${y}px`)//.attr("transform", "translate(" +x + "," + y + ")")
-                .style("left", `${x <= 150 ? x : x + positionFactor}px`)
+                //.style("left", `${x <= 150 ? x : x + positionFactor}px`)
+                .style("left", () => {
+                    let tooltipWidth = document.getElementById("map-tooltip").getBoundingClientRect().width;
+                    return tooltipWidth + positionFactor > event.pageX ? event.pageX + positionFactor + "px" : event.pageX - (positionFactor + tooltipWidth) + "px";
+                })
 
             d3.select(this)
                 .style('fill', 'aqua')

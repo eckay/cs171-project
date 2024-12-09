@@ -34,7 +34,9 @@ let myDataTable,
     myMapVis,
     myBarVisOne,
     myBoxPlot,
-    guessingGame;
+    guessingGame,
+    pieInitiatingAction,
+    pieBanStatus;
 
 let selectedTimeRange = [];
 let selectedState = '';
@@ -80,6 +82,26 @@ function initPage(data) {
 
     let pen_2122 = data[7];
     let pen_2223 = data[8];
+
+    let Districts = [];
+    pen_2324.forEach( function(book) {
+        if (book.State === "Florida") {
+            Districts.push(book["Ban Status"]);
+        }
+        
+    })
+    
+    let uniqueDistricts = new Set(Districts)
+    //console.log("unique", uniqueDistricts)
+    let reasonsArray = Array.from(uniqueDistricts, function(d){
+        let element = {
+            reason: d,
+            count: Districts.filter(item => item === d).length
+        }
+        return element
+    })
+    //console.log(reasonsArray)
+    //console.log("unique", uniqueDistricts.length, uniqueDistricts.filter(item => item === "Banned by restriction").length)
 
     // Convert type all together here
     kaggle.forEach((book) => {
@@ -150,6 +172,10 @@ function initPage(data) {
     // Intro circles
     circleComparison = new compareCircles("compareCircles", 275, pen_2122.length, pen_2223.length, pen_2324.length)
 
+    // Pie charts for state focus
+    pieInitiatingAction = new statePie("pie-chart-initiating-action", pen_2324, "Initiating Action");
+    pieBanStatus = new statePie("pie-chart-ban-status", pen_2324, "Ban Status");
+
 }
 
 // map category changes
@@ -199,4 +225,34 @@ function stopGuessingGame()
 {
     guessingGame.gameStatus = "revealing answers";
     guessingGame.updateVis();
+}
+
+function stateFocus() {
+    let selectedButton = [...document.querySelectorAll('.state-focus:checked')].map((d) => d.id)[0];
+    let focusText = d3.select("#state-focus-text")
+    if (selectedButton === "iowa-focus") {
+        focusText.html(`
+            <p>
+                Iowa had over 600 times more bans in 2023-24 than in the previous school year because of a law passed in May 2023 regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>. The law requires school libraries to contain “only age-appropriate materials” which excludes “any material with descriptions or visual depictions of a sex act.” Because of this law, we see all bans originating from the administration and the vast majority fully removing the book.
+            </p>
+            <p>
+                The overwhelming number of books to screen, with no guidance from the state’s Department of Education on whether classroom libraries are covered by the law, caused <a href="https://www.nytimes.com/2023/09/01/opinion/book-ban-schools-iowa.html">one school administrator</a> to turn to ChatGPT, as well as conservative sites like Book Looks, for assistance in determining which books contain a sex act.
+            </p>
+            <p>
+                Each school library had to make their own decisions in an attempt to comply with the law, leading to discrepancies between school districts. For example, while the author of the op-ed’s district did not remove “The Absolutely True Diary of a Part-Time Indian,” 44 other Iowa school districts chose to remove it.
+            </p>
+        `)
+    }
+    else {
+        focusText.html(`
+            <p>
+                Florida, leading the country in number of book bans, had approximately three times as many bans in 2023-24 as in the previous school year. In May 2023, <a hreg=“https://www.flsenate.gov/Session/Bill/2023/1069/“>HB 1069</a> was signed into law. The law expanded the ways books can be challenged, exposed classroom libraries to bans, and specified that a book “depict[ing] or describ[ing] sexual conduct” makes it challengeable.
+            </p>
+            <p>
+                The law also requires that all books challenged for including “sexual conduct” be removed from access within five days until undergoing a review process, which is why the majority of bans in Florida are “banned pending investigation”.
+            </p>
+        `)
+    }
+    pieInitiatingAction.wrangleData();
+    pieBanStatus.wrangleData();
 }

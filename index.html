@@ -26,33 +26,33 @@
 
 
         <div class="section container-fluid" style="height: 100vh;">
-            <div class="row justify-content-center headline">
+            <div class="row justify-content-center headline headline-1">
                 <div class="col d-flex justify-content-center">
                     <img class="headline-img" id="hl1" src="img/hl1.png"/>
                 </div>
             </div>
-            <div class="row justify-content-center headline">
+            <div class="row justify-content-center headline headline-2">
                 <div class="col d-flex justify-content-center">
                     <img class="headline-img" id="hl2" src="img/hl2.png"/>
                 </div>
             </div>
-            <div class="row justify-content-center headline">
+            <div class="row justify-content-center headline headline-3">
                 <div class="col d-flex justify-content-center">
                     <img class="headline-img" id="hl3" src="img/hl3.png"/>
                 </div>
             </div>
-            <div class="row justify-content-center headline">
+            <div class="row justify-content-center headline headline-4">
                 <div class="col d-flex justify-content-center">
                     <img class="headline-img" id="hl4" src="img/hl4.png"/>
                 </div>
             </div>
-            <div class="row justify-content-center headline">
+            <div class="row justify-content-center headline headline-5">
                 <div class="col d-flex justify-content-center">
                     <img class="headline-img" id="hl5" src="img/hl5.png"/>
                 </div>
             </div>
             <div class="row justify-content-center headline">
-                <div class="col d-flex justify-content-center">
+                <div class="col d-flex justify-content-center title-col">
                     <h1 id="story-title">Books Bans in US Schools</h3>
                 </div>
             </div>
@@ -99,8 +99,8 @@
             <div class="row">
                 <div class="col" style="height: 20vh">
                     <h6>
-                        So it's not the case that a few books are broadly banned by most states. Let's take a closer 
-                        look.
+                        So it's not the case that a few books are broadly banned by most states—less than half of all states 
+                        contain a school district that banned a book in 2023-24. Let's take a closer look.
                     </h6>
                     <p>
                         Click a state to see how its number of bans has changed over the past three years.
@@ -137,11 +137,34 @@
             </div>      
         </div>
         <div class="section container-fluid">
-            <div class="row justify-content-center">
+            <div class="row justify-content-center" style="padding-bottom: 2vh;padding-top: 2vh;">
                 <div class="col text-center">
-                    <p>What's going on in Iowa? A law regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>, 
-                    was passed in May 2023. See <a href="https://www.nytimes.com/2023/09/01/opinion/book-ban-schools-iowa.html">teacher's op-ed</a>.
-                    [map of iowa by school district if we have time?] [maybe also a closer look at florida?]
+                        <h3 style="display:inline">What's going on in</h3>
+                        <input type="radio" class="btn-check state-focus" name="options" id="iowa-focus" value="Iowa" autocomplete="off" onclick="stateFocus()" checked>
+                        <label class="btn btn-outline-primary" for="iowa-focus">Iowa</label>
+    
+                        <input type="radio" class="btn-check state-focus" name="options" id="florida-focus" value="Florida" autocomplete="off" onclick="stateFocus()">
+                        <label class="btn btn-outline-primary" for="florida-focus">Florida</label> <h3 style="display:inline">?</h3>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <div class="row justify-content-center">
+                        <div class="col" id="pie-chart-initiating-action" style="height: 30vh;"></div>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col" id="pie-chart-ban-status" style="height: 30vh;"></div>
+                    </div>
+                </div>
+                <div class="col-6" id="state-focus-text" style="height: 90vh;">
+                    <p>
+                        Iowa had over 600 times more bans in 2023-24 than in the previous school year because of a law passed in May 2023 regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>. The law requires school libraries to contain “only age-appropriate materials” which excludes “any material with descriptions or visual depictions of a sex act.” Because of this law, we see all bans originating from the administration and the vast majority fully removing the book.
+                    </p>
+                    <p>
+                        The overwhelming number of books to screen, with no guidance from the state’s Department of Education on whether classroom libraries are covered by the law, caused <a href="https://www.nytimes.com/2023/09/01/opinion/book-ban-schools-iowa.html">one school administrator</a> to turn to ChatGPT, as well as conservative sites like Book Looks, for assistance in determining which books contain a sex act.
+                    </p>
+                    <p>
+                        Each school library had to make their own decisions in an attempt to comply with the law, leading to discrepancies between school districts. For example, while the author of the op-ed’s district did not remove “The Absolutely True Diary of a Part-Time Indian,” 44 other Iowa school districts chose to remove it.
                     </p>
                 </div>
             </div>
@@ -335,6 +358,7 @@
     <script src="js/ek_js/tagVis.js"></script>
     <script src="js/ek_js/mapBar.js"></script>
     <script src="js/ek_js/compareCircles.js"></script>
+    <script src="js/ek_js/statePie.js"></script>
     <script src="js/main.js"></script>
 
         <script src="js/boxplot.js"></script>
