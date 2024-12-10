@@ -122,7 +122,13 @@ function initPage(data) {
     banned_array.sort((a, b) => b.value - a.value);
     let top100 = banned_array.slice(0, 100);
     //top100.forEach((d) => console.log(`"${d.key}"`))
-    //console.log(top100)
+
+    console.log("banned array", banned_array.length)
+    console.log("banned array", banned_array)
+    let singleBan = banned_array.filter((d) => d.value === 1)
+    console.log("single ban", singleBan)
+    console.log("fraction banned only once", singleBan.length / banned_array.length)
+
     goodreads100.forEach((book) => {
         top100.forEach((d => {
             if (d.key == book.title) {
@@ -175,6 +181,9 @@ function initPage(data) {
     // Pie charts for state focus
     pieInitiatingAction = new statePie("pie-chart-initiating-action", pen_2324, "Initiating Action");
     pieBanStatus = new statePie("pie-chart-ban-status", pen_2324, "Ban Status");
+
+    // Basic grid of books for parts of a whole
+    gridBooks = new bookGrid("books-grid", singleBan.length / banned_array.length);
 
 }
 
