@@ -11,6 +11,8 @@ class scatterChart {
     initVis() {
 		let vis = this; 
 
+		console.log(vis.bannedData)
+
 		vis.parentWidth = document.getElementById(vis.parentElement).getBoundingClientRect().width;
 		vis.parentHeight = document.getElementById(vis.parentElement).getBoundingClientRect().height;
 		
@@ -54,6 +56,7 @@ class scatterChart {
 		vis.legend = vis.svg.append("g")
 			.attr("class", "scatter-legend")
 			.attr("transform", `translate(${vis.width + vis.margin.right / 3.5}, 0)`)
+			.attr("opacity", 1)
 		
 		vis.legend
 			.append("circle")
@@ -79,6 +82,9 @@ class scatterChart {
 			.attr("x", vis.circleRadius * 2)
 			.attr("y", vis.circleRadius * 11)
 			.attr("font-size", vis.circleRadius * 4)
+
+		//vis.infoBoxHtml = vis.svg.append("g")
+		//	.attr("transform", "translate(" + (vis.width / 14 + vis.circleRadius * 2) + "," + (vis.height / 14 + vis.circleRadius * 2) + ")");
           
         this.wrangleData();
     }
@@ -97,9 +103,10 @@ class scatterChart {
             vis.displayData.push(book);
         });
 
+		console.log(vis.displayData)
+
 
 		// For timelines things
-		console.log(vis.bannedData)
 		//console.log(d3.group(vis.bannedData, d => d.publication_year).get(vis.bannedData[100].publication_year))
 		//console.log(d3.group(vis.bannedData, d => d.publication_year).get(vis.bannedData[100].publication_year).indexOf(vis.bannedData[100]))
 
@@ -139,6 +146,8 @@ class scatterChart {
 		}
 		*/
 
+		console.log(vis.displayData)
+
 		vis.restoreElems();
 		
 	}
@@ -146,10 +155,14 @@ class scatterChart {
 	restoreElems() {
 		let vis = this;
 
+		// Make legend visible
+		vis.legend
+			.style("opacity", 1)
+
 		// Tooltip
         vis.tooltip = d3.select("body").append('div')
             .attr("class", "tooltip")
-			.attr("id", "tooltip")
+			.attr("id", "scatter-tooltip")
 
 		// Axis labels
 		vis.xLabel = vis.svg.append("text")
@@ -260,7 +273,7 @@ class scatterChart {
 							<p><i>click for more info</i></p>             
 						</div>`); 
 
-				let tooltipHeight = document.getElementById("tooltip").getBoundingClientRect().height;
+				let tooltipHeight = document.getElementById("scatter-tooltip").getBoundingClientRect().height;
 				let parentSize = document.getElementById(vis.parentElement).getBoundingClientRect();
 
 				vis.tooltip
@@ -316,6 +329,10 @@ class scatterChart {
 					.duration(300)
 					.style("opacity", 0)
 					//.remove()
+				vis.legend
+					.transition()
+					.duration(300)
+					.style("opacity", 0)
 
 				vis.xLabel
 					.remove()
@@ -480,7 +497,16 @@ class scatterChart {
 	focusVis(book, circle){
 		let vis = this;
 
-		console.log(book)
+		console.log(vis.displayData)
+
+		vis.infoBoxHtml = d3.select("#scatter-section").append("div")
+			.style("opacity", 0)
+			.style("left", 0)
+			.style("top", 0)
+			.html(``);
+		
+
+		console.log("in scatter", book);
 		vis.infoBox = vis.svg.append("g")
 			.attr("transform", "translate(" + (vis.width / 14 + vis.circleRadius * 2) + "," + (vis.height / 14 + vis.circleRadius * 2) + ")");
 		
@@ -494,8 +520,56 @@ class scatterChart {
 			.attr("stroke", "black")
 			.attr("fill", "rgba(0, 0, 0, 0)")
 
+		let svgCoords = vis.infoBox.node().getBoundingClientRect();
+		console.log(svgCoords)
+
 		let imageHeight = vis.height * 0.4;
+	
+		vis.infoBoxHtml
+			.attr("class", "infoBoxHtml container-fluid")
+			.attr("id", "infoBoxHtml")
+			.style("opacity", 1)
+			.style("position", "absolute")
+			.style("left", svgCoords.x + "px")
+			.style("top", svgCoords.y + "px")
+			.style("width", svgCoords.width + "px")
+			.style("height", svgCoords.height + "px")
+			.html(`
+
+				<div class="row justify-content-center">
+					<div class="col-8 text-center">
+						<h6>
+						<a href="${book.url}">${book.title}</a>
+						</h6>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-4 text-center">
+						
+					</div>
+					<div class="col-8">
+						<p>
+							Average Goodreads rating: ${book.average_rating}
+						</p>
+						<p>
+							Total number of ratings: ${book.ratings_count}
+						</p>
+						<p>
+							Publication year: ${book.publication_year}
+						</p>
+						<p>
+							Page count: ${book.num_pages}
+						</p>
+						<p>
+							Bans: ${book.bans}
+						</p>
+					</div>
+				</div>
+			
+			`)
+
 		
+		// <img height="${imageHeight}" src="${book.image_url}"/>
 		let coverImage = vis.infoBox
 			.append("image")
 			.attr("xlink:href", book.image_url)
@@ -505,12 +579,14 @@ class scatterChart {
 			.attr("y", vis.height * 0.7 / 2 - imageHeight / 2)
 
 		// Title
+		/*
 		vis.infoBox
 			.append("text")
 			.attr("x", vis.width - vis.margin.right - vis.circleRadius * 3)
 			.attr("y", vis.circleRadius * 5)
 			.attr("text-anchor", "end")
 			.text(`${book.title}`);
+		*/
 		
 		let coverImg = coverImage.node().getBBox();
 		//let image_x = parseInt(d3.select("#coverImage").attr("y"));
@@ -522,7 +598,7 @@ class scatterChart {
 			.attr("x", coverImg.x + coverImg.width + vis.circleRadius * 3)
 			.attr("y", coverImg.y)
 			//.attr("text-anchor", "end")
-			.text(`Average Goodreads rating: ${book.average_rating}`)
+			.text(``)
 		
 		d3.selectAll(".scatter-buttons")
 			.on('click', function() {
@@ -535,6 +611,9 @@ class scatterChart {
 			.on('click', function(event, d) {
 				
 				vis.infoBox
+					.remove();
+
+				vis.infoBoxHtml
 					.remove();
 
 				d3.select("circle.selected")
@@ -588,6 +667,17 @@ class scatterChart {
 		
 		vis.infoBox
 			.remove();
+
+		vis.infoBoxHtml
+			.remove();
+
+		vis.infoBoxHtml
+			.style("opacity", 0)
+			.style("left", 0)
+			.style("top", 0)
+			.html(``);
+
+		console.log("HELP")
 
 		vis.selectedButton = [...document.querySelectorAll('.scatter-buttons:checked')].map((d) => d.value)[0];
 
