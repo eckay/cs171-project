@@ -53,6 +53,7 @@ class BrushVis {
                 ];
 
                 myDataTable.wrangleData();
+                myBoxPlot.wrangleData();
 
 
             });

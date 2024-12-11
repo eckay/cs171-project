@@ -58,7 +58,7 @@ let promises = [
     d3.json("data/banned100_characteristics.json"),
 
     //bannedmerged for barchart & boxplot
-    d3.csv("data/bannedMerged.csv"),
+    d3.csv("data/bannedMerged3.csv"),
 
     // PEN data for previous years
     d3.csv("data/PEN_2122.csv"),
