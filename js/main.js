@@ -21,9 +21,9 @@ new fullpage('#fullpage', {
 
     },
 	//options here
-    sectionsColor: ['white', 'rgb(16, 171, 169)', 'rgb(16, 171, 169)', 'rgb(16, 171, 169)', 'rgb(16, 171, 169)', 
-                    "rgb(16, 171, 169)", "rgb(16, 171, 169)", "rgb(16, 171, 169)", 
-                    "white", "rgb(16, 171, 169)", "rgb(16, 171, 169)", "rgb(16, 171, 169)"],
+    sectionsColor: ['white', 'white', 'white', 'white', 'white', 
+                    "white", "white", "white", 
+                    "white", "white", "white", "white"],
 	autoScrolling:true,
 	scrollHorizontally: true,
     normalScrollElements: '#tableDiv',

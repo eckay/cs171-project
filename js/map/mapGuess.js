@@ -222,6 +222,8 @@ class mapGuess {
         if(vis.gameStatus === "playing")
         {
             console.log("playing game!")
+            d3.select('#correct-map-guesses').text("")
+            d3.select('#incorrect-map-guesses').text("")
             vis.svgLegend.style("opacity", 0);
             d3.selectAll(".state-guessing").style("fill", 'gray')
             // let guessingStatusDiv = vis.svg.select("#guessing-status-div")
@@ -252,6 +254,8 @@ class mapGuess {
                 let color = vis.topBooksByState[state] != undefined ? '#4CBB17' : 'red'
                 d3.select(this).style("fill", color)
             });
+            d3.select('#correct-map-guesses').text(`Correct: ${numberCorrect}`)
+            d3.select('#incorrect-map-guesses').text(`Incorrect ${numberWrong}`)
             console.log(`you correctly selected ${numberCorrect} and incorrectly selected ${numberWrong}`)
         }
         else
