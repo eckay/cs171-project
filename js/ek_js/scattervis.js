@@ -63,7 +63,7 @@ class scatterChart {
 			.attr("cx", 0)
 			.attr("cy", 0)
 			.attr("r", vis.circleRadius)
-			.attr("fill", "darkblue")
+			.attr("fill", "#0B9895")
 		vis.legend
 			.append("circle")
 			.attr("cx", 0)
@@ -247,13 +247,13 @@ class scatterChart {
 				}
 			})
 			.attr("r", vis.circleRadius)
-			.attr("fill", "darkblue")
+			.attr("fill", "#0B9895")
 			.style("opacity", 1)
 			.attr("class", "banned")
 			// merge with returning circle that was red x button
 			.merge(vis.bannedCircles)
 			.attr("r", vis.circleRadius)
-			.attr("fill", "darkblue")
+			.attr("fill", "#0B9895")
 			.style("opacity", 1)
 			.attr("class", "banned")
 			.attr('stroke-width', '0px')
@@ -288,7 +288,7 @@ class scatterChart {
 			.on('mouseout', function(event, d){
 				d3.select(this)
 					.attr('stroke-width', '0px')
-					.attr("fill", "darkblue")
+					.attr("fill", "#0B9895")
 
 				vis.tooltip
 					.style("opacity", 0)
@@ -369,7 +369,7 @@ class scatterChart {
 		let vis = this;
 
 		d3.select("#scatterTitle")
-			.text("Are the most frequently banned books popular or well-rated?");
+			.html(`<span class="brown-highlight">Are the most frequently banned books popular or well-rated?</span>`);
 
 
 		// Axes
@@ -409,7 +409,7 @@ class scatterChart {
 		let vis = this;
 
 		d3.select("#scatterTitle")
-			.text("When were the most frequently banned books of 2023-24 published?")
+			.html(`<span class="brown-highlight">When were the most frequently banned books of 2023-24 published?</span>`)
 
 		vis.yAxisG
 			.transition()
@@ -454,7 +454,7 @@ class scatterChart {
 		let vis = this;
 
 		d3.select("#scatterTitle")
-			.text("How many school districts banned each book?")
+			.html(`<span class="brown-highlight">How many school districts banned each book?</span>`)
 
 		vis.yAxisG
 			.transition()

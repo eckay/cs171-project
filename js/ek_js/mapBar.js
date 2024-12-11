@@ -91,13 +91,15 @@ class MapBar {
 
         // Bars
         vis.bars = vis.svg.selectAll(".bar")
-            .data(vis.displayData, (d) => d.id)
+            .data(vis.displayData, (d) => d.year)
 
         vis.bars.exit().remove();
         
         vis.bars.enter()
             .append("rect")
             .attr("class", "bar")
+            .merge(vis.bars)
+            .transition()
             .attr("x", d => x(d.year))
             .attr("y", d => y(d.bans))
             .attr("width", x.bandwidth())
@@ -106,16 +108,18 @@ class MapBar {
 
         // Add labels
         vis.labels = vis.svg.selectAll(".label")
-            .data(vis.displayData, (d) => d.id)
+            .data(vis.displayData, (d) => d.year)
 
         vis.labels.exit().remove();
         
         vis.labels.enter()
             .append("text")
+            .attr("class", "label")
+            .attr("text-anchor", "middle")
+            .merge(vis.labels)
+            .transition()
             .attr("x", d => x(d.year) + x.bandwidth() / 2)
             .attr("y", d => y(d.bans) - 5)
-            .attr("text-anchor", "middle")
-            .attr("class", "label")
             .text(d => d.bans);
 
         // Title

@@ -107,7 +107,7 @@ class tagVis {
             .attr("cy", (d) => d.y)
             .attr("fill", (d) => {
                 d.side = d["profanity"] ? "right" : "left";
-                return d["profanity"] ? "red" : "grey";
+                return d["profanity"] ? "#e05547" : "grey";
             })
             // Could use string(first letter + hash) instead i guess. might be faster but idk if that's a concern really
             .attr("id", (d) => d.title.replaceAll(" ", "").replaceAll(":", "").replaceAll("'", ""))
@@ -142,7 +142,7 @@ class tagVis {
 			})
 			.on('mouseout', function(event, d){
 				d3.select(this)
-					.attr("fill", (d) => d.side === "right" ? "red" : "grey")
+					.attr("fill", (d) => d.side === "right" ? "#e05547" : "grey")
 
 				vis.tooltip
 					.style("opacity", 0)
@@ -191,7 +191,7 @@ class tagVis {
                         //return vis.width / 4;
                     }
                     vis.bubbles
-			            .attr("fill", (d) => d.side === "right" ? "red" : "grey");
+			            .attr("fill", (d) => d.side === "right" ? "#e05547" : "grey");
                     return truthArray.every(Boolean) ? vis.width / 4 * 3: vis.width / 4;
                 }
                 else {

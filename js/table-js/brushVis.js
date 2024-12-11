@@ -124,7 +124,7 @@ class BrushVis {
             .attr("y", d => vis.y(d.count))
             .attr("width", vis.width / vis.preProcessedData.length)
             .attr("height", d => vis.height - vis.y(d.count))
-            .attr("fill", "#0A706E");
+            .attr("fill", "#e05547");
 
         vis.brushGroup.call(vis.brush);
     }

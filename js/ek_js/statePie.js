@@ -12,9 +12,10 @@ class statePie {
         let vis = this;
 
         // Margin convention
-        vis.margin = {top: 10, right: 10, bottom: 10, left: 10};
-        vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
+        let parentSize = document.getElementById(vis.parentElement).getBoundingClientRect();
+        vis.margin = {top: vis.category === "Ban Status" ? 10 : parentSize.height * .15, right: 10, bottom: vis.category === "Ban Status" ? parentSize.height * .15 : 10, left: 10};
+        vis.width = parentSize.width - vis.margin.left - vis.margin.right;
+        vis.height = parentSize.height - vis.margin.top - vis.margin.bottom;
 
         // SVG drawing area
 		vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -48,6 +49,19 @@ class statePie {
         vis.tooltip = d3.select("body").append('div')
             .attr('class', "tooltip state-focus-tooltip")
             .attr('id', `pieTooltip-${vis.category[0]}`)
+
+        // Title
+        vis.title = vis.svg
+            .append("text")
+            .attr("class", "pie-title")
+
+        // Title
+        vis.title
+            .text(vis.category)
+            .attr("x", vis.width / 2)
+            .attr("y", vis.category === "Ban Status" ? vis.margin.bottom + vis.height : -vis.margin.top / 2)
+            .attr("text-anchor", "middle")
+            .attr("font-size", 11)
 
         this.wrangleData();
     }
@@ -107,7 +121,7 @@ class statePie {
             .attr("fill", (d) => d.data.color)
             .on('mouseover', function(event, d){
                 d3.select(this)
-                    .attr('fill', 'grey');
+                    .attr('fill', '#e05547');
 
                 vis.tooltip
                     .style("opacity", 1)

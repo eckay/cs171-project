@@ -313,7 +313,7 @@ class MapVis {
                 })
 
             d3.select(this)
-                .style('fill', 'aqua')
+                .style('fill', '#12CECB')
 
 
         })

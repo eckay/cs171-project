@@ -54,7 +54,7 @@ class compareCircles {
         vis.c_2015
             .transition()
             .duration(transition1)
-            .attr("fill", "red")
+            .attr("fill", "#45C0C9")
             .attr("opacity", 1)
 
         vis.c_2015_text = vis.svg
@@ -74,7 +74,7 @@ class compareCircles {
 
         d3.select("#compareCircles-text")
             .append("p")
-            .html(`In 2015, the American Library Association reported <span style="color: red; font-weight: bold;">${vis.bans_2015}</span> challenges to books in US schools.
+            .html(`In 2015, the American Library Association reported <span style="color: #45C0C9; font-weight: bold;">${vis.bans_2015}</span> challenges to books in US schools.
                 A challenge isn't a ban—it's just an attempt to remove a book and doesn't necessarily succeed.`)
             .style("opacity", 0)
             .transition()
@@ -130,7 +130,7 @@ class compareCircles {
             .append("p")
             .style("opacity", 0)
             .html(`During the 2021-22 academic year, PEN America recorded
-                <span style="color: teal; font-weight: bold;">${vis.bans_2021}</span> instances of books being banned by school districts.`)
+                <span style="color: #0B8381; font-weight: bold;">${vis.bans_2021}</span> instances of books being banned by school districts.`)
             .transition()
             .duration(transition3)
             .style("opacity", 1)
@@ -141,7 +141,7 @@ class compareCircles {
             .attr("cy", vis.height / 2)
             .attr("r", () => vis.rscale(Math.sqrt(vis.bans_2021)))
             .attr("opacity", 0)
-            .attr("fill", "teal")
+            .attr("fill", "#0B8381")
             .transition()
             .duration(transition3)
             .attr("opacity", 1)
@@ -158,7 +158,7 @@ class compareCircles {
             .append("p")
             .style("opacity", 0)
             .html(`During the 2022-23 academic year, they recorded
-            <span style="color: purple; font-weight: bold;">${vis.bans_2022}</span>.`)
+            <span style="color: #0BB071; font-weight: bold;">${vis.bans_2022}</span>.`)
             .transition()
             .duration(transition4)
             .style("opacity", 1)
@@ -172,7 +172,7 @@ class compareCircles {
             .attr("cy", vis.height / 2)
             .attr("r", () => vis.rscale(Math.sqrt(vis.bans_2022)))
             .attr("opacity", 0)
-            .attr("fill", "purple")
+            .attr("fill", "#0BB071")
             .transition()
             .duration(transition4)
             .attr("opacity", 1)
@@ -185,7 +185,7 @@ class compareCircles {
         d3.select("#compareCircles-text")
             .append("p")
             .style("opacity", 0)
-            .html(`Last year, 2023-24, they counted <span style="color: green; font-weight: bold;">${vis.bans_2023}</span> bans.`)
+            .html(`Last year, 2023-24, they counted <span style="color: #032A29; font-weight: bold;">${vis.bans_2023}</span> bans.`)
             .transition()
             .duration(transition5)
             .style("opacity", 1)
@@ -199,7 +199,7 @@ class compareCircles {
             .attr("cy", vis.height / 2)
             .attr("r", () => vis.rscale(Math.sqrt(vis.bans_2023)))
             .attr("opacity", 0)
-            .attr("fill", "green")
+            .attr("fill", "#032A29")
             .transition()
             .duration(transition5)
             .attr("opacity", 1)
@@ -211,8 +211,8 @@ class compareCircles {
         d3.select("#compareCircles-conclusion")
         .append("p")
         .style("opacity", 0)
-        .text(`That might seem like a lot of bans, but is it? With 50 states and (typically) tens to hundreds of school districts
-                per state, are there just a few controversial books being broadly banned across the country?`)
+        .html(`That might seem like a lot of bans, but is it? With 50 states and (typically) tens to hundreds of school districts
+                per state, <span class="brown-highlight">are there just a few controversial books being broadly banned across the country?</span>`)
         .transition()
         .duration(transition6)
         .style("opacity", 1)

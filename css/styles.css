@@ -62,6 +62,15 @@
     text-align: center;
 }
 
+.brown-highlight {
+    color: #e05547;
+    font-weight: bold;
+}
+
+a {
+    color: #bc4439;
+}
+
 @media (max-width: 700px) {
     #story-title {
         font-size: 6vmin; 
@@ -221,23 +230,23 @@
  }
 
 .state-focus:checked + .btn-outline-primary {
-    background-color: rgb(255, 0, 230);
-    border-color: rgb(255, 0, 230);
+    background-color: #e05547;
+    border-color: #e05547;
 }
 
 .state-focus + .btn-outline-primary {
-    border-color: rgb(255, 0, 230);
-    color: rgb(255, 0, 230);
+    border-color: #e05547;
+    color: #e05547;
 }
 
 /* Tag vis */
 
 .tags:checked + label{
-    color: red;
+    color: #e05547;
 }
 
 .tags {
-    accent-color: red;
+    accent-color: #e05547;
 }
 
 #tags-header {
@@ -264,13 +273,13 @@ barvis-area {
 /* Scatter vis sizing */
 
 .scatter-buttons:checked + .btn-outline-primary {
-    background-color: rgb(255, 0, 230);
-    border-color: rgb(255, 0, 230);
+    background-color: #e05547;
+    border-color: #e05547;
 }
 
 .scatter-buttons + .btn-outline-primary {
-    border-color: rgb(255, 0, 230);
-    color: rgb(255, 0, 230);
+    border-color: #e05547;
+    color: #e05547;
 }
 
 #scatter-area {

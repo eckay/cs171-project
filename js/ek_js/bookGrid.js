@@ -87,6 +87,6 @@ class bookGrid {
                 .attr("height", vis.cellHeight)            
                 .attr("stroke", "black")
                 .attr("stroke-width", (d) => d.filled ? 0 : 10)
-                .attr("fill", (d) => d.filled ? "red" : "none"))
+                .attr("fill", (d) => d.filled ? "#e05547" : "none"))
     }
 }

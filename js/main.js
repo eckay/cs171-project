@@ -249,7 +249,7 @@ function stateFocus() {
             .attr("id", "iowa-focus-text")
             .html(`
             <p>
-                Iowa had over 600 times more bans in 2023-24 than in the previous school year because of a law passed in May 2023 regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>. The law requires school libraries to contain “only age-appropriate materials” which excludes “any material with descriptions or visual depictions of a sex act.” Because of this law, we see all bans originating from the administration and the vast majority fully removing the book.
+                Iowa had over <span class="brown-highlight">600 times more bans</span> in 2023-24 than in the previous school year because of a <span class="brown-highlight">law passed in May 2023</span> regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>. The law requires school libraries to contain “only age-appropriate materials” which excludes “any material with descriptions or visual depictions of a sex act.” Because of this law, all bans originate from the administration and the vast majority fully remove the book.
             </p>
             <p>
                 The overwhelming number of books to screen, with no guidance from the state’s Department of Education on whether classroom libraries are covered by the law, caused <a href="https://www.nytimes.com/2023/09/01/opinion/book-ban-schools-iowa.html">one school administrator</a> to turn to ChatGPT, as well as conservative sites like Book Looks, for assistance in determining which books contain a sex act.
@@ -264,10 +264,10 @@ function stateFocus() {
             .attr("id", "florida-focus-text")
             .html(`
             <p>
-                Florida, leading the country in number of book bans, had approximately three times as many bans in 2023-24 as in the previous school year. In May 2023, <a hreg=“https://www.flsenate.gov/Session/Bill/2023/1069/“>HB 1069</a> was signed into law. The law expanded the ways books can be challenged, exposed classroom libraries to bans, and specified that a book “depict[ing] or describ[ing] sexual conduct” makes it challengeable.
+                Florida, leading the country in number of book bans, had approximately <span class="brown-highlight">three times as many bans</span> in 2023-24 as in the previous school year. In May 2023, <a hreg=“https://www.flsenate.gov/Session/Bill/2023/1069/“>HB 1069</a> was signed into law. The law expanded the ways books can be challenged, exposed classroom libraries to bans, and specified that a book “depict[ing] or describ[ing] sexual conduct” makes it challengeable.
             </p>
             <p>
-                The law also requires that all books challenged for including “sexual conduct” be removed from access within five days until undergoing a review process, which is why the majority of bans in Florida are “banned pending investigation”.
+                The law also requires that all books challenged for including “sexual conduct” be <span class="brown-highlight">removed from access within five days</span> until undergoing a review process, which is why the majority of bans in Florida are “banned pending investigation”.
             </p>
         `)
     }
