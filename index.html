@@ -180,7 +180,7 @@
         </div>
 
 
-
+        <!--
         <div class="section container-fluid">
             <div class="container-fluid content-box">
                 <div class="row justify-content-center">
@@ -205,6 +205,88 @@
                             <div class="col" id="brushDiv"></div>
                         </div>
 
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+
+
+        <div class="section container-fluid">
+            <div class="container-fluid content-box">
+                <div class="row justify-content-center">
+                    <div class="col-9">
+                        <p style="font-size: 11px">
+                            What are the exact books being banned? Let's look at the 50 books that were banned most often to get an overview of the books that students have been denied access to. Brush over the timeline to see banned books from your choice of time period. Do you recognize any old favorites?
+                        </p>
+                        <p id="tableTitle" style="text-align: center">What books have been banned?</p>
+                    </div>
+                </div>
+            
+    
+                <div class="row justify-content-center">
+                    <div class="col-10">
+                        <div id="tableDiv" style="overflow-y: scroll; height: 30vh; width: 100%; padding: 20px; border: thin solid grey; border-radius: 5px;"></div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+                    <div class="col-5 d-flex flex-column" style="height: 80vh; overflow-y: hidden;">
+                        <div id="brushDiv" style="height: 40vh;"></div>                        
+                    </div>
+                    <div class="col-5 d-flex flex-column" style="height: 80vh; overflow-y: hidden;">
+                        <div id="boxplot-area" style="height: 40vh;"></div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+        <div class="section container-fluid">
+            <div class="container-fluid content-box" id="ranking-game">
+                <div class="header">
+                    <h1>Guess the Top Reasons Books Are Banned</h1>
+                    <p>People cite many reasons when trying to ban books. If you think you understand the ones most commonly used, drag the reasons from the right into the top 5 slots. Click "Grade Me" to see how well you did! Or, click "Show Correct Answers" to see the full result, along with how many books, from the top 100 banned books, were challenged because of that reason.</p>
+                    <button id="gradeButton">Grade Me</button>
+                    <button id="showCorrectButton">Show Correct Answers</button>
+                    <button id="playAgainButton">Play Again</button>
+        
+        
+                </div>
+        
+                <div class="game-area">
+                    <div class="left-column">
+                        <div class="drop-zone" data-rank="1">
+                            <span class="zone-number">1</span>
+                        </div>
+                        <div class="drop-zone" data-rank="2">
+                            <span class="zone-number">2</span>
+                        </div>
+                        <div class="drop-zone" data-rank="3">
+                            <span class="zone-number">3</span>
+                        </div>
+                        <div class="drop-zone" data-rank="4">
+                            <span class="zone-number">4</span>
+                        </div>
+                        <div class="drop-zone" data-rank="5">
+                            <span class="zone-number">5</span>
+                        </div>
+                    </div>
+        
+        
+                    <div class="right-column">
+                        <div class="draggable" draggable="true" data-reason="violence">Violence</div>
+                        <div class="draggable" draggable="true" data-reason="viewpoint">Drugs/Alcohol/Smoking</div>
+                        <div class="draggable" draggable="true" data-reason="language">Profane Language</div>
+                        <div class="draggable" draggable="true" data-reason="unsuited">Unsuited for Community</div>
+                        <div class="draggable" draggable="true" data-reason="age group">Unsuited for Age Group</div>
+        
+                        <div class="draggable" draggable="true" data-reason="sexually explicit">Sexually Explicit</div>
+                        <div class="draggable" draggable="true" data-reason="lgbtqia+ content">LGBTQIA+ Content</div>
+                        <div class="draggable" draggable="true" data-reason="religious">Anti-Religion</div>
+                        <div class="draggable" draggable="true" data-reason="political">Political Viewpoint</div>
+                        <div class="draggable" draggable="true" data-reason="offensive">Morally Offensive</div>
+        
                     </div>
                 </div>
             </div>
@@ -303,20 +385,7 @@
             </div>
         </div>
 
-        <div class="section container-fluid">
-            <div class="container-fluid content-box">
-                <div class="row justify-content-center">
-                    <div class="col">
-                        <h3>Frequency of most common words in complaints leading to bans</h3>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-11" id="barvis-area">
-                    </div>
-                </div>
-            </div>
-        </div>
-
+        <!--
         <div class="section container-fluid">
             <div class="container-fluid content-box">
                 <div class="row justify-content-center">
@@ -325,6 +394,9 @@
                 </div>
             </div>
         </div>
+
+        -->
+        
 
 
 
@@ -417,6 +489,8 @@
                         Where our data came from
                     </p>
                 </div>
+                <div class="col-11" id="barvis-area">
+                </div>
             </div>
         </div>
 
@@ -451,8 +525,9 @@
     <script src="js/ek_js/bookGrid.js"></script>
     <script src="js/main.js"></script>
 
-        <script src="js/boxplot.js"></script>
-        <script src="js/barchart.js"></script>
+    <script src="js/alex/barchart.js"></script>
+    <script src="js/alex/boxplot.js"></script>
+    <script src="js/alex/rankgame.js"></script>
 
 
     <script src="js/table-js/brushVis.js"></script>
