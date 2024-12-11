@@ -102,7 +102,7 @@ class MapBar {
             .attr("y", d => y(d.bans))
             .attr("width", x.bandwidth())
             .attr("height", d => vis.height - y(d.bans))
-            .attr("fill", "steelblue");
+            .attr("fill", "#12CECB");
 
         // Add labels
         vis.labels = vis.svg.selectAll(".label")

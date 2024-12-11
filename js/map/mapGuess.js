@@ -230,7 +230,7 @@ class mapGuess {
             d3.selectAll(".state-guessing").on('click', function(event, d) {
 
                 let state = d.properties.name
-                let color = vis.topBooksByState[state] != undefined ? 'green' : 'red'
+                let color = vis.topBooksByState[state] != undefined ? '#4CBB17' : 'red'
                 d3.select(this).style("fill", color)
             });
             //append("div")
@@ -241,7 +241,7 @@ class mapGuess {
             let numberWrong = 0;
             d3.selectAll(".state-guessing").each(function(d)
             {
-                if (d3.select(this).style("fill") === "green") {
+                if (d3.select(this).style("fill") === "#4CBB17") {
                     numberCorrect++;
                 }
                 else if (d3.select(this).style("fill") === "red") {
@@ -249,7 +249,7 @@ class mapGuess {
                 }
                 
                 let state = d.properties.name
-                let color = vis.topBooksByState[state] != undefined ? 'green' : 'red'
+                let color = vis.topBooksByState[state] != undefined ? '#4CBB17' : 'red'
                 d3.select(this).style("fill", color)
             });
             console.log(`you correctly selected ${numberCorrect} and incorrectly selected ${numberWrong}`)

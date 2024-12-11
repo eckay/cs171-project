@@ -16,20 +16,18 @@
 }
 
 .content-box {
-    height: 98vh;
+    height: 95vh;
+    border-radius: 5px;
+    padding-top: 2vh;
+    padding-bottom: 1vh;
+    background-color: white;
 }
 
 .content-box1 {
     height: 75vh;
 }
 
-.tags:checked + label{
-    color: red;
-}
 
-.tags {
-    accent-color: red;
-}
 
 /* Title slide */
 .headline-img {
@@ -60,9 +58,15 @@
 #story-title {
     padding-top: 0.5%;
     color: rgb(16, 171, 169);
-    font-size: 8vh;
+    font-size: 8vmin;
     text-align: center;
 }
+
+@media (max-width: 700px) {
+    #story-title {
+        font-size: 6vmin; 
+    }
+ }
 
 #hl1{
     transform: translate3d(0, 50px, 0);
@@ -136,7 +140,42 @@
     opacity: 1;
 }
 
-/* Intro Page */
+/* Circle comparison minivis */
+@media (max-width: 800px) 
+ {
+    #compareCircles-text,
+    #compareCircles-conclusion {
+        font-size: 0.9em; 
+    }
+ }
+
+ @media (max-width: 700px) 
+ {
+    #compareCircles-text,
+    #compareCircles-conclusion {
+        font-size: 0.8em; 
+    }
+    #compareCircles-intro {
+        font-size: 0.9em; 
+    }
+ }
+
+ @media (max-width: 576px) 
+ {
+    #compareCircles-text,
+    #compareCircles-conclusion {
+        font-size: 1em; 
+        padding-left: 2vw;
+        text-align: left;
+    }
+ }
+
+@media (max-width: 576px) {
+    .content-box#compare-circles-box {
+        height: 140vh;
+    }
+}
+
 
 #compareCircles {
     height: 60vh;
@@ -148,10 +187,10 @@
 
 #compareCircles-conclusion {
     height: 12vh;
+    text-align: center;
 }
 
-/* Pie chart styles */
-
+/* Pie chart/state focus styles */
 .tooltip.state-focus-tooltip {
     width: 200px;
     padding: 10px;
@@ -170,3 +209,116 @@
 .tooltip.state-focus-tooltip h4 {
     font: 14px sans-serif;
 }
+
+#iowa-focus-text {
+    font-size: 0.9em;
+}
+
+@media (min-width: 1000px) {
+    #iowa-focus-text {
+        font-size: 1em; 
+    }
+ }
+
+.state-focus:checked + .btn-outline-primary {
+    background-color: rgb(255, 0, 230);
+    border-color: rgb(255, 0, 230);
+}
+
+.state-focus + .btn-outline-primary {
+    border-color: rgb(255, 0, 230);
+    color: rgb(255, 0, 230);
+}
+
+/* Tag vis */
+
+.tags:checked + label{
+    color: red;
+}
+
+.tags {
+    accent-color: red;
+}
+
+#tags-header {
+    height: 12.82vh;
+    text-align: center;
+}
+
+.tags-select-col {
+    height: 15.67vh;
+}
+
+.tag-bubble-col {
+    height: 64vh;
+}
+
+#boxplot-area {
+    height: 50vh;
+}
+
+barvis-area {
+    height: 50vh;
+}
+
+/* Scatter vis sizing */
+
+.scatter-buttons:checked + .btn-outline-primary {
+    background-color: rgb(255, 0, 230);
+    border-color: rgb(255, 0, 230);
+}
+
+.scatter-buttons + .btn-outline-primary {
+    border-color: rgb(255, 0, 230);
+    color: rgb(255, 0, 230);
+}
+
+#scatter-area {
+    height: 80vh;
+    width: 60vw;
+}
+
+#scatter-intro-text {
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+}
+
+#scatter-intro-text > p {
+    font-size: 1.1em;
+}
+
+/* Guessing game map*/
+
+#guessingGame {
+    height: 70vh; 
+    width:100%; 
+    margin-top:1vh; 
+    margin-bottom:1vh;
+}
+
+#guessing-game-text {
+    height: 18vh;
+}
+
+/* Table styles */
+
+#tableDiv {
+    overflow-y: scroll; 
+    height: 40vh; 
+    width:90vw; 
+    padding: 20px; 
+    border: thin solid #0A706E; 
+    border-radius: 5px; 
+    background: white;
+    font-size: 1.5vw;
+}
+
+#brushDiv {
+    height: 30vh; 
+    width: 100%;
+}
+
+#brushable-heading > h5{
+    font-size: 2vw;
+}
+ 

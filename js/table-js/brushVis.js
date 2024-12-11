@@ -14,7 +14,7 @@ class BrushVis {
 
         vis.margin = {top: 20, right: 50, bottom: 20, left: 50};
         vis.width = document.getElementById(vis.parentElement).getBoundingClientRect().width - vis.margin.left - vis.margin.right;
-        vis.height = 200 - vis.margin.top - vis.margin.bottom;
+        vis.height = document.getElementById(vis.parentElement).getBoundingClientRect().height - vis.margin.top - vis.margin.bottom;
 
         vis.svg = d3.select("#" + vis.parentElement).append("svg")
             .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -124,7 +124,7 @@ class BrushVis {
             .attr("y", d => vis.y(d.count))
             .attr("width", vis.width / vis.preProcessedData.length)
             .attr("height", d => vis.height - vis.y(d.count))
-            .attr("fill", "steelblue");
+            .attr("fill", "#0A706E");
 
         vis.brushGroup.call(vis.brush);
     }

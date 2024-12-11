@@ -16,9 +16,9 @@ class scatterChart {
 		vis.parentWidth = document.getElementById(vis.parentElement).getBoundingClientRect().width;
 		vis.parentHeight = document.getElementById(vis.parentElement).getBoundingClientRect().height;
 		
-        vis.margin = {top: 10, right: vis.parentWidth * 0.15, bottom: 50, left: 40};
+        vis.margin = {top: 10, right: vis.parentWidth * 0.18, bottom: 50, left: vis.parentWidth * 0.1};
 
-		vis.width = vis.parentWidth * 0.8 - vis.margin.left - vis.margin.right;
+		vis.width = vis.parentWidth - vis.margin.left - vis.margin.right;
 		vis.height = vis.parentHeight - vis.margin.top - vis.margin.bottom;
 
 		// Crucial unit of measurement
@@ -63,7 +63,7 @@ class scatterChart {
 			.attr("cx", 0)
 			.attr("cy", 0)
 			.attr("r", vis.circleRadius)
-			.attr("fill", "blue")
+			.attr("fill", "darkblue")
 		vis.legend
 			.append("circle")
 			.attr("cx", 0)

@@ -21,6 +21,9 @@ new fullpage('#fullpage', {
 
     },
 	//options here
+    sectionsColor: ['white', 'rgb(16, 171, 169)', 'rgb(16, 171, 169)', 'rgb(16, 171, 169)', 'rgb(16, 171, 169)', 
+                    "rgb(16, 171, 169)", "rgb(16, 171, 169)", "rgb(16, 171, 169)", 
+                    "white", "rgb(16, 171, 169)", "rgb(16, 171, 169)", "rgb(16, 171, 169)"],
 	autoScrolling:true,
 	scrollHorizontally: true,
     normalScrollElements: '#tableDiv',
@@ -240,9 +243,11 @@ function stopGuessingGame()
 
 function stateFocus() {
     let selectedButton = [...document.querySelectorAll('.state-focus:checked')].map((d) => d.id)[0];
-    let focusText = d3.select("#state-focus-text")
+    let focusText = d3.select(".state-focus-text")
     if (selectedButton === "iowa-focus") {
-        focusText.html(`
+        focusText
+            .attr("id", "iowa-focus-text")
+            .html(`
             <p>
                 Iowa had over 600 times more bans in 2023-24 than in the previous school year because of a law passed in May 2023 regulating the contents of school libraries, <a href="https://www.legis.iowa.gov/legislation/BillBook?ga=90&ba=SF496">SF 496</a>. The law requires school libraries to contain “only age-appropriate materials” which excludes “any material with descriptions or visual depictions of a sex act.” Because of this law, we see all bans originating from the administration and the vast majority fully removing the book.
             </p>
@@ -255,7 +260,9 @@ function stateFocus() {
         `)
     }
     else {
-        focusText.html(`
+        focusText
+            .attr("id", "florida-focus-text")
+            .html(`
             <p>
                 Florida, leading the country in number of book bans, had approximately three times as many bans in 2023-24 as in the previous school year. In May 2023, <a hreg=“https://www.flsenate.gov/Session/Bill/2023/1069/“>HB 1069</a> was signed into law. The law expanded the ways books can be challenged, exposed classroom libraries to bans, and specified that a book “depict[ing] or describ[ing] sexual conduct” makes it challengeable.
             </p>

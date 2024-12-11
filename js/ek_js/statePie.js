@@ -3,7 +3,7 @@ class statePie {
         this.parentElement = parentElement;
         this.bans_2023 = bans_2023;
         this.category = category;
-        this.colors = ['blue', 'red', 'green', 'purple'];
+        this.colors = ['#12CECB', '#0B8381', '#053837'];
 
         this.initVis();
     }
@@ -36,7 +36,7 @@ class statePie {
             .value(d => d.count);
 
         // Pie chart settings
-        let outerRadius = vis.width / 3;
+        let outerRadius = d3.min([vis.width, vis.height]) / 2;
         let innerRadius = 0;      // Relevant for donut charts
 
         // Path generator for the pie segments
@@ -54,9 +54,9 @@ class statePie {
 
     wrangleData() {
         let vis = this;
+
         let allCategory = [];
         vis.state = [...document.querySelectorAll('.state-focus:checked')].map((d) => d.value)[0];
-        vis.category = vis.category;
 
         vis.bans_2023.forEach(function(book) {
             if (book.State === vis.state) {
