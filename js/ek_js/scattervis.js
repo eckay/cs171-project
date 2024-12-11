@@ -47,9 +47,9 @@ class scatterChart {
 
 		// Generate axes 
         vis.yAxisG = vis.svg.append("g")
-            .attr("class", "axis y-axis");            
+            .attr("class", "axis-scatter y-axis-scatter");            
         vis.xAxisG = vis.svg.append("g")
-            .attr("class", "axis x-axis")
+            .attr("class", "axis-scatter x-axis-scatter")
             .attr("transform", `translate(0, ${vis.height})`);
 
 		// Legend
@@ -319,12 +319,12 @@ class scatterChart {
 					.transition()
 					.duration(300)
 					.style("opacity", 0);
-				d3.select(".x-axis")
+				d3.select(".axis-scatter")
 					.transition()
 					.duration(300)
 					.style("opacity", 0)
 					//.remove()
-				d3.select(".y-axis")
+				d3.select(".x-axis-scatter")
 					.transition()
 					.duration(300)
 					.style("opacity", 0)
@@ -420,7 +420,7 @@ class scatterChart {
 			.scale(vis.xTimeScale)
 			.tickFormat(d3.format("d"));
 
-		d3.select(".x-axis")
+		d3.select(".x-axis-scatter")
 			.transition(300)
 			.style("opacity", 1)
 			.call(vis.xAxis);
@@ -464,7 +464,7 @@ class scatterChart {
 		vis.xAxis
 			.scale(vis.xBanScale);
 
-		d3.select(".x-axis")
+		d3.select(".x-axis-scatter")
 			.transition()
 			.style("opacity", 1)
 			.call(vis.xAxis);
