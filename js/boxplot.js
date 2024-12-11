@@ -29,6 +29,21 @@ class BoxPlotVis {
         vis.svg.append("g").attr("class", "x-axis").attr("transform", `translate(0, ${vis.height})`);
         vis.svg.append("g").attr("class", "y-axis");
 
+         vis.svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("x", vis.width / 2)
+            .attr("y", vis.height + 50)
+            .text("Reasons")
+            .style("font-size", "14px");
+
+        vis.svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("transform", `rotate(-90)`)
+            .attr("x", -vis.height / 2)
+            .attr("y", -60)
+            .text("Number of Ratings")
+            .style("font-size", "14px");
+        
         vis.wrangleData();
     }
 
