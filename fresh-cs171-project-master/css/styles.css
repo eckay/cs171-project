@@ -1,0 +1,172 @@
+.section {
+    height: 100vh;
+}
+
+
+#connections-area {
+    height: 97vh;
+    padding-bottom: 1vh;
+    padding-top: 3vh;
+}
+
+#table-area {
+    height: 97vh;
+    padding-bottom: 1vh;
+    padding-top: 3vh;
+}
+
+.content-box {
+    height: 98vh;
+}
+
+.content-box1 {
+    height: 75vh;
+}
+
+.tags:checked + label{
+    color: red;
+}
+
+.tags {
+    accent-color: red;
+}
+
+/* Title slide */
+.headline-img {
+    max-width: 60vw;
+    max-height: 80%;  
+}
+
+.headline-1 {
+    max-height: 20%;
+}
+
+.headline-2 {
+    max-height: 22.4%;
+}
+
+.headline-3 {
+    max-height: 14.6%;
+}
+
+.headline-4 {
+    max-height: 11%;
+}
+
+.headline-5 {
+    max-height: 16.8%;
+}
+
+#story-title {
+    padding-top: 0.5%;
+    color: rgb(16, 171, 169);
+    font-size: 8vh;
+    text-align: center;
+}
+
+#hl1{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 200ms;
+}
+
+#hl1.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl2{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 800ms;
+}
+
+#hl2.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl3{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 1400ms;
+}
+
+#hl3.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl4{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 2000ms;
+}
+
+#hl4.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#hl5{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 2600ms;
+}
+
+#hl5.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+#story-title{
+    transform: translate3d(0, 50px, 0);
+    opacity: 0;
+    transition: all 700ms ease;
+    transition-delay: 3500ms;
+}
+
+#story-title.active{
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+}
+
+/* Intro Page */
+
+#compareCircles {
+    height: 60vh;
+}
+
+#compareCircles-intro {
+    height: 12vh;
+}
+
+#compareCircles-conclusion {
+    height: 12vh;
+}
+
+/* Pie chart styles */
+
+.tooltip.state-focus-tooltip {
+    width: 200px;
+    padding: 10px;
+    position: absolute;
+    text-align: left;
+    font: 12px sans-serif;
+    background-color: rgba(255, 255, 255, 0.8); /* Translucent white background, referenced GPT */
+    border-radius: 4px;
+    /*  pointer-events: none;	This line needs to be removed */
+    color: black;
+}
+.tooltip.state-focus-tooltip h3,h4 {
+    text-align: left;
+    font: 25px sans-serif;
+}
+.tooltip.state-focus-tooltip h4 {
+    font: 14px sans-serif;
+}
