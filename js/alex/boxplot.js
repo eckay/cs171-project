@@ -24,7 +24,7 @@ class BoxPlotVis {
         vis.yScale = d3.scaleLinear().range([vis.height, 0]);
 
         vis.xAxis = d3.axisBottom(vis.xScale);
-        vis.yAxis = d3.axisLeft(vis.yScale);
+        vis.yAxis = d3.axisLeft(vis.yScale).tickFormat(d3.format(".0s"));;
 
         vis.svg.append("g").attr("class", "x-axis").attr("transform", `translate(0, ${vis.height})`);
         vis.svg.append("g").attr("class", "y-axis");
