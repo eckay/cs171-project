@@ -456,3 +456,8 @@ button:hover {
     opacity: 1;
 }
 
+#barvis-area {
+    display: none;
+}
+
+
